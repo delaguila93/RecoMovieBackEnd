@@ -2,7 +2,7 @@ package com.recomovie.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.recomovie.dao.FilmDAO;
-import com.recomovie.entity.Film;
+import com.recomovie.entity.Pelicula;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,8 +41,8 @@ public class FilmController {
     }
 
     @GetMapping("/testRead")
-    public ResponseEntity<Film> getFilm() {
-        ResponseEntity<Film> respuesta;
+    public ResponseEntity<Pelicula> getFilm() {
+        ResponseEntity<Pelicula> respuesta;
         HttpStatus status = HttpStatus.OK;
         String message = " ";
         ObjectMapper Obj = new ObjectMapper();

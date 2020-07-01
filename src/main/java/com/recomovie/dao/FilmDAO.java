@@ -1,6 +1,5 @@
 package com.recomovie.dao;
 
-import com.recomovie.entity.Film;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
