@@ -1,7 +1,7 @@
 package com.recomovie.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.recomovie.dao.FilmDAO;
+import com.recomovie.dao.PeliculaDAO;
 import com.recomovie.entity.Pelicula;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
  *
  */
 @RestController
-@RequestMapping("films")
-public class FilmController {
+@RequestMapping("pelicula")
+public class PeliculaController {
 
 
     @Autowired(required = true)
-    private FilmDAO filmDAO;
+    private PeliculaDAO peliculaDAO;
 
     @GetMapping("/testMundo")
     public ResponseEntity getTest() {
@@ -48,7 +48,7 @@ public class FilmController {
         ObjectMapper Obj = new ObjectMapper();
 
         try {
-            message = Obj.writeValueAsString(filmDAO.getFilm());
+            message = Obj.writeValueAsString(peliculaDAO.getFilm());
 
         } catch (Exception e) {
             message = e.getMessage();

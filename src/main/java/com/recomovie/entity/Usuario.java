@@ -19,7 +19,7 @@ public class Usuario {
 
     @Id
     @Column( name="idUsuario")
-    private int idUser;
+    private int idUsuario;
     @Column( name="nombreUsuario")
     private String nombreUsuario;
     private String password;
@@ -34,7 +34,7 @@ public class Usuario {
 
 
     public Usuario() {
-        this.idUser = -1;
+        this.idUsuario = -1;
         this.nombreUsuario = "";
         this.password = "";
         this.eMail = "";
@@ -42,8 +42,8 @@ public class Usuario {
         this.peliculasVistas = null;
     }
 
-    public Usuario(int idUser, String nombreUsuario, String password, String eMail, Date fechaNacimineto, Set<Visualizacion> peliculasVistas) {
-        this.idUser = idUser;
+    public Usuario(int idUsuario, String nombreUsuario, String password, String eMail, Date fechaNacimineto, Set<Visualizacion> peliculasVistas) {
+        this.idUsuario = idUsuario;
         this.nombreUsuario = nombreUsuario;
         this.password = password;
         this.eMail = eMail;
@@ -51,12 +51,12 @@ public class Usuario {
         this.peliculasVistas = peliculasVistas;
     }
 
-    public int getIdUser() {
-        return idUser;
+    public int getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getNombreUsuario() {
@@ -102,7 +102,7 @@ public class Usuario {
     @Override
     public String toString() {
         return "Usuario{" +
-                "idUser=" + idUser +
+                "idUser=" + idUsuario +
                 ", nombreUsuario='" + nombreUsuario + '\'' +
                 ", password='" + password + '\'' +
                 ", eMail='" + eMail + '\'' +

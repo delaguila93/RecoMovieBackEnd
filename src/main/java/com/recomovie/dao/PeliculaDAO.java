@@ -8,7 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Repository
-public class FilmDAO {
+public class PeliculaDAO {
 
     @PersistenceContext
     EntityManager em;
