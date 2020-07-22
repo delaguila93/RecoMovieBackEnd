@@ -1,6 +1,10 @@
 package com.recomovie.entity;
 
+import com.recomovie.dto.ComentarioDTO;
+
 import javax.persistence.*;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.Date;
 
 /*
@@ -29,11 +33,11 @@ public class Comentario {
         this.visualizacion = null;
     }
 
-    public Comentario(int idComentario, Date fechaComentario, String comentario, Visualizacion visualizacion) {
+    public Comentario(int idComentario, Date fechaComentario, String comentario) {
         this.idComentario = idComentario;
         this.fechaComentario = fechaComentario;
         this.comentario = comentario;
-        this.visualizacion = visualizacion;
+        this.visualizacion = new Visualizacion();
     }
 
     public int getIdComentario() {
@@ -76,5 +80,13 @@ public class Comentario {
                 ", comentario='" + comentario + '\'' +
                 ", visualizacion=" + visualizacion +
                 '}';
+    }
+
+    public static Comentario fromDTO(ComentarioDTO c) throws ParseException {
+        return new Comentario(c.getIdComentario(),DateFormat.getDateInstance().parse(c.getFechaComentario()),c.getComentario());
+    }
+
+    public ComentarioDTO toDTO(){
+        return new ComentarioDTO(this.idComentario,this.fechaComentario.toString(),this.comentario);
     }
 }

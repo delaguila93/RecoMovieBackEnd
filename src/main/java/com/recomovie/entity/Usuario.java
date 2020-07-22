@@ -6,12 +6,16 @@
 
 package com.recomovie.entity;
 
+import com.recomovie.dto.UsuarioDTO;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.Set;
+import java.util.TreeSet;
 
 @Entity
 @Table(name = "Usuario")
@@ -42,13 +46,13 @@ public class Usuario {
         this.peliculasVistas = null;
     }
 
-    public Usuario(int idUsuario, String nombreUsuario, String password, String eMail, Date fechaNacimineto, Set<Visualizacion> peliculasVistas) {
+    public Usuario(int idUsuario, String nombreUsuario, String password, String eMail, Date fechaNacimineto) {
         this.idUsuario = idUsuario;
         this.nombreUsuario = nombreUsuario;
         this.password = password;
         this.eMail = eMail;
         this.fechaNacimineto = fechaNacimineto;
-        this.peliculasVistas = peliculasVistas;
+        this.peliculasVistas = new TreeSet<>();
     }
 
     public int getIdUsuario() {
@@ -109,5 +113,13 @@ public class Usuario {
                 ", fechaNacimineto=" + fechaNacimineto +
                 ", peliculasVistas=" + peliculasVistas +
                 '}';
+    }
+
+    public static Usuario fromDTO(UsuarioDTO u) throws ParseException {
+        return new Usuario(u.getIdUsuario(),u.getNombreUsuario(),u.getPassword(),u.geteMail(), DateFormat.getDateInstance().parse(u.getFechaNacimiento()));
+    }
+
+    public UsuarioDTO toDTO(){
+        return new UsuarioDTO(this.idUsuario,this.nombreUsuario,this.password,this.eMail,this.fechaNacimineto.toString(),this.peliculasVistas.size());
     }
 }

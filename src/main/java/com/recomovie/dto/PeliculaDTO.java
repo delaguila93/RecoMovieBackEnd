@@ -95,4 +95,18 @@ public class PeliculaDTO {
     public void setNumVisualizaciones(int numVisualizaciones) {
         this.numVisualizaciones = numVisualizaciones;
     }
+
+    @Override
+    public String toString() {
+        return "PeliculaDTO{" +
+                "idPelicula=" + idPelicula +
+                ", titulo='" + titulo + '\'' +
+                ", genero='" + genero + '\'' +
+                ", sinopsis='" + sinopsis + '\'' +
+                ", director='" + director + '\'' +
+                ", year=" + year +
+                ", duracion=" + duracion +
+                ", numVisualizaciones=" + numVisualizaciones +
+                '}';
+    }
 }

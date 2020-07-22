@@ -1,5 +1,6 @@
 package com.recomovie.entity;
 
+import com.recomovie.dto.PeliculaDTO;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -16,6 +17,7 @@ public class Pelicula {
     private int idPelicula;
     private String titulo;
     private String genero;
+    @Column(name="sinopsis", length=512)
     private String sinopsis;
     private String director;
     private int year;
@@ -112,5 +114,25 @@ public class Pelicula {
         this.visualizaciones = visualizaciones;
     }
 
+    @Override
+    public String toString() {
+        return "Pelicula{" +
+                "idPelicula=" + idPelicula +
+                ", titulo='" + titulo + '\'' +
+                ", genero='" + genero + '\'' +
+                ", sinopsis='" + sinopsis + '\'' +
+                ", director='" + director + '\'' +
+                ", year=" + year +
+                ", duracion=" + duracion +
+                ", visualizaciones=" + visualizaciones +
+                '}';
+    }
 
+    public static Pelicula fromDTO (PeliculaDTO p){
+        return new Pelicula(p.getIdPelicula(),p.getTitulo(),p.getGenero(),p.getSinopsis(),p.getDirector(),p.getYear(),p.getDuracion());
+    }
+
+    public PeliculaDTO toDTO(){
+        return new PeliculaDTO(this.idPelicula,this.titulo,this.genero,this.sinopsis,this.director,this.year,this.duracion,this.visualizaciones.size());
+    }
 }

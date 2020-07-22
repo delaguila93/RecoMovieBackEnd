@@ -1,8 +1,9 @@
 package com.recomovie.entity;
 
 
+import com.recomovie.dto.VisualizacionDTO;
+
 import javax.persistence.*;
-import java.util.Set;
 
 /*
  *
@@ -14,7 +15,7 @@ import java.util.Set;
 public class Visualizacion {
 
     @Id
-    private int idRating;
+    private int idVisualizacion;
 
     @ManyToOne
     @JoinColumn(name = "idPelicula")
@@ -24,43 +25,43 @@ public class Visualizacion {
     @JoinColumn(name = "idUsuario")
     private Usuario usuario;
 
-    private float rating;
+    private float valoracion;
 
     @OneToOne
     @JoinColumn(name = "idComentario")
     private Comentario comentario;
 
     public Visualizacion(){
-        this.idRating = -99999;
+        this.idVisualizacion = -99999;
         this.pelicula = null;
         this.usuario = null;
-        this.rating = -999;
+        this.valoracion = -999;
         this.comentario = null;
 
     }
 
-    public Visualizacion(int idRating, Pelicula pelicula, Usuario usuario, float rating, Comentario comentario) {
-        this.idRating = idRating;
-        this.pelicula = pelicula;
-        this.usuario = usuario;
-        this.rating = rating;
-        this.comentario = comentario;
+    public Visualizacion(int idVisualizacion,float valoracion) {
+        this.idVisualizacion = idVisualizacion;
+        this.pelicula = new Pelicula();
+        this.usuario = new Usuario();
+        this.valoracion = valoracion;
+        this.comentario = new Comentario();
     }
 
-    public int getIdRating() {
-        return idRating;
+    public int getIdVisualizacion() {
+        return idVisualizacion;
     }
 
-    public void setIdRating(int idRating) {
-        this.idRating = idRating;
+    public void setIdVisualizacion(int idVisualizacion) {
+        this.idVisualizacion = idVisualizacion;
     }
 
-    public float getRating() {
-        return rating;
+    public float getValoracion() {
+        return valoracion;
     }
 
-    public void setRating(float rating) {
-        this.rating = rating;
+    public void setValoracion(float valoracion) {
+        this.valoracion = valoracion;
     }
 
     public Pelicula getPelicula() {
@@ -90,11 +91,19 @@ public class Visualizacion {
     @Override
     public String toString() {
         return "Visualizacion{" +
-                "idRating=" + idRating +
+                "idVisualizacion=" + idVisualizacion +
                 ", pelicula=" + pelicula +
                 ", usuario=" + usuario +
-                ", rating=" + rating +
+                ", valoracion=" + valoracion +
                 ", comentario=" + comentario +
                 '}';
+    }
+
+    public static Visualizacion fromDTO(VisualizacionDTO v){
+        return new Visualizacion(v.getIdVisualizacion(),v.getValoracion());
+    }
+
+    public VisualizacionDTO toDTO(){
+        return new VisualizacionDTO(this.idVisualizacion,this.pelicula.getIdPelicula(),this.usuario.getIdUsuario(),this.valoracion,this.comentario.getIdComentario());
     }
 }
