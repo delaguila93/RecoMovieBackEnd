@@ -1,9 +1,11 @@
 package com.recomovie.entity;
 
-
 import com.recomovie.dto.VisualizacionDTO;
-
 import javax.persistence.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.List;
 
 /*
  *
@@ -27,25 +29,29 @@ public class Visualizacion {
 
     private float valoracion;
 
-    @OneToOne
-    @JoinColumn(name = "idComentario")
-    private Comentario comentario;
+    @Temporal(TemporalType.DATE)
+    @Column( name="fechaComentario")
+    private Date fechaComentario;
+
+    private String comentario;
 
     public Visualizacion(){
         this.idVisualizacion = -99999;
         this.pelicula = null;
         this.usuario = null;
         this.valoracion = -999;
-        this.comentario = null;
+        this.fechaComentario = null;
+        this.comentario = "";
 
     }
 
-    public Visualizacion(int idVisualizacion,float valoracion) {
+    public Visualizacion(int idVisualizacion,float valoracion,String comentario,Date fechaComentario) {
         this.idVisualizacion = idVisualizacion;
         this.pelicula = new Pelicula();
         this.usuario = new Usuario();
         this.valoracion = valoracion;
-        this.comentario = new Comentario();
+        this.fechaComentario = fechaComentario;
+        this.comentario = "";
     }
 
     public int getIdVisualizacion() {
@@ -80,11 +86,19 @@ public class Visualizacion {
         this.usuario = usuario;
     }
 
-    public Comentario getComentario() {
+    public Date getFechaComentario() {
+        return fechaComentario;
+    }
+
+    public void setFechaComentario(Date fechaComentario) {
+        this.fechaComentario = fechaComentario;
+    }
+
+    public String getComentario() {
         return comentario;
     }
 
-    public void setComentario(Comentario comentario) {
+    public void setComentario(String comentario) {
         this.comentario = comentario;
     }
 
@@ -99,11 +113,11 @@ public class Visualizacion {
                 '}';
     }
 
-    public static Visualizacion fromDTO(VisualizacionDTO v){
-        return new Visualizacion(v.getIdVisualizacion(),v.getValoracion());
+    public static Visualizacion fromDTO(VisualizacionDTO v) throws ParseException {
+        return new Visualizacion(v.getIdVisualizacion(),v.getValoracion(),v.getComentario(), DateFormat.getDateInstance().parse(v.getFechaComentario()));
     }
 
     public VisualizacionDTO toDTO(){
-        return new VisualizacionDTO(this.idVisualizacion,this.pelicula.getIdPelicula(),this.usuario.getIdUsuario(),this.valoracion,this.comentario.getIdComentario());
+        return new VisualizacionDTO(this.idVisualizacion,this.pelicula.getIdPelicula(),this.usuario.getIdUsuario(),this.valoracion,this.comentario,this.fechaComentario.toString());
     }
 }

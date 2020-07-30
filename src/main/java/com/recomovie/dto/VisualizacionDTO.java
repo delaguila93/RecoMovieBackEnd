@@ -12,17 +12,20 @@ public class VisualizacionDTO {
     private int idPelicula;
     private int idUsuario;
     private float valoracion;
-    private int idComentario;
+
+    private String fechaComentario;
+    private String comentario;
 
     public VisualizacionDTO() {
     }
 
-    public VisualizacionDTO(int idVisualizacion, int idPelicula, int idUsuario, float valoracion, int idComentario) {
+    public VisualizacionDTO(int idVisualizacion, int idPelicula, int idUsuario, float valoracion, String comentario,String fechaComentario) {
         this.idVisualizacion = idVisualizacion;
         this.idPelicula = idPelicula;
         this.idUsuario = idUsuario;
         this.valoracion = valoracion;
-        this.idComentario = idComentario;
+        this.comentario = comentario;
+        this.fechaComentario = fechaComentario;
     }
 
     public int getIdVisualizacion() {
@@ -57,12 +60,20 @@ public class VisualizacionDTO {
         this.valoracion = valoracion;
     }
 
-    public int getIdComentario() {
-        return idComentario;
+    public String getFechaComentario() {
+        return fechaComentario;
     }
 
-    public void setIdComentario(int idComentario) {
-        this.idComentario = idComentario;
+    public void setFechaComentario(String fechaComentario) {
+        this.fechaComentario = fechaComentario;
+    }
+
+    public String getComentario() {
+        return comentario;
+    }
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
     }
 
     @Override
@@ -72,7 +83,8 @@ public class VisualizacionDTO {
                 ", idPelicula=" + idPelicula +
                 ", idUsuario=" + idUsuario +
                 ", valoracion=" + valoracion +
-                ", idComentario=" + idComentario +
+                ", fechaComentario='" + fechaComentario + '\'' +
+                ", comentario='" + comentario + '\'' +
                 '}';
     }
 }
