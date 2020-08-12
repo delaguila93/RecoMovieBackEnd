@@ -19,7 +19,7 @@ public class VisualizacionDTO {
     public VisualizacionDTO() {
     }
 
-    public VisualizacionDTO(int idVisualizacion, int idPelicula, int idUsuario, float valoracion, String comentario,String fechaComentario) {
+    public VisualizacionDTO(int idVisualizacion, int idPelicula, int idUsuario, float valoracion,String fechaComentario,String comentario) {
         this.idVisualizacion = idVisualizacion;
         this.idPelicula = idPelicula;
         this.idUsuario = idUsuario;

@@ -45,13 +45,13 @@ public class Visualizacion {
 
     }
 
-    public Visualizacion(int idVisualizacion,float valoracion,String comentario,Date fechaComentario) {
-        this.idVisualizacion = idVisualizacion;
+    public Visualizacion(int idVisualizacion,float valoracion,Date fechaComentario,String comentario) {
+        //this.idVisualizacion = idVisualizacion;
         this.pelicula = new Pelicula();
         this.usuario = new Usuario();
         this.valoracion = valoracion;
         this.fechaComentario = fechaComentario;
-        this.comentario = "";
+        this.comentario = comentario;
     }
 
     public int getIdVisualizacion() {
@@ -102,6 +102,15 @@ public class Visualizacion {
         this.comentario = comentario;
     }
 
+
+    public static Visualizacion fromDTO(VisualizacionDTO v) throws ParseException {
+        return new Visualizacion(v.getIdVisualizacion(),v.getValoracion(),DateFormat.getDateInstance().parse(v.getFechaComentario()),v.getComentario());
+    }
+
+    public VisualizacionDTO toDTO(){
+        return new VisualizacionDTO(this.idVisualizacion,this.pelicula.getIdPelicula(),this.usuario.getIdUsuario(),this.valoracion,this.fechaComentario.toString(),this.comentario);
+    }
+
     @Override
     public String toString() {
         return "Visualizacion{" +
@@ -109,15 +118,8 @@ public class Visualizacion {
                 ", pelicula=" + pelicula +
                 ", usuario=" + usuario +
                 ", valoracion=" + valoracion +
-                ", comentario=" + comentario +
+                ", fechaComentario=" + fechaComentario +
+                ", comentario='" + comentario + '\'' +
                 '}';
-    }
-
-    public static Visualizacion fromDTO(VisualizacionDTO v) throws ParseException {
-        return new Visualizacion(v.getIdVisualizacion(),v.getValoracion(),v.getComentario(), DateFormat.getDateInstance().parse(v.getFechaComentario()));
-    }
-
-    public VisualizacionDTO toDTO(){
-        return new VisualizacionDTO(this.idVisualizacion,this.pelicula.getIdPelicula(),this.usuario.getIdUsuario(),this.valoracion,this.comentario,this.fechaComentario.toString());
     }
 }

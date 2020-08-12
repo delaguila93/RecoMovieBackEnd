@@ -1,12 +1,12 @@
 package com.recomovie.entity;
 
 import com.recomovie.dto.PeliculaDTO;
+import jdk.internal.net.http.common.Pair;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 
 @Entity
@@ -114,6 +114,10 @@ public class Pelicula {
         this.visualizaciones = visualizaciones;
     }
 
+    public void anadirVisualizacion(Visualizacion v){
+        this.visualizaciones.add(v);
+    }
+
     @Override
     public String toString() {
         return "Pelicula{" +
@@ -135,4 +139,16 @@ public class Pelicula {
     public PeliculaDTO toDTO(){
         return new PeliculaDTO(this.idPelicula,this.titulo,this.genero,this.sinopsis,this.director,this.year,this.duracion,this.visualizaciones.size());
     }
+
+    public List<Pair<String, Date>> listadoComentarios(){
+        List<Pair<String, Date>> listado = new ArrayList<>();
+        for(Visualizacion v : visualizaciones){
+            if(v.getFechaComentario() != null && v.getPelicula().getIdPelicula() == this.idPelicula) {
+                listado.add(new Pair<String,Date>(v.getComentario(),v.getFechaComentario()));
+            }
+        }
+        return listado;
+    }
+
+
 }

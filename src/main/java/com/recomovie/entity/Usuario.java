@@ -103,6 +103,10 @@ public class Usuario {
         this.peliculasVistas = peliculasVistas;
     }
 
+    public void anadirPeliculaVista(Visualizacion v ){
+        this.peliculasVistas.add(v);
+    }
+
     @Override
     public String toString() {
         return "Usuario{" +
@@ -122,4 +126,6 @@ public class Usuario {
     public UsuarioDTO toDTO(){
         return new UsuarioDTO(this.idUsuario,this.nombreUsuario,this.password,this.eMail,this.fechaNacimineto.toString(),this.peliculasVistas.size());
     }
+
+
 }
