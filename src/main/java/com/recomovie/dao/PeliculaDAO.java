@@ -68,10 +68,10 @@ public class PeliculaDAO {
     }
 
     @Transactional
-    public void anadirVisualizacion(VisualizacionDTO v){
-        Visualizacion visualizacion = new Visualizacion();
-        Pelicula p = em.find(Pelicula.class,v.getIdPelicula());
-        Usuario u = em.find(Usuario.class,v.getIdUsuario());
+    public void crearVisualizacion(int idPelicula, int idUsuario){
+        Pelicula p = em.find(Pelicula.class,idPelicula);
+        Usuario u = em.find(Usuario.class,idUsuario);
+        Visualizacion visualizacion = new Visualizacion(u,p);
         p.anadirVisualizacion(visualizacion);
         u.anadirPeliculaVista(visualizacion);
         em.merge(p);
@@ -85,10 +85,26 @@ public class PeliculaDAO {
                 .setParameter(1,idPelicula)
                 .setParameter(2,idUsuario)
                 .getSingleResult();
-
         v.setFechaComentario(DateFormat.getDateInstance().parse(fecha));
         v.setComentario(comentario);
         em.merge(v);
+    }
+
+    @Transactional
+    public void anadirValoracion(int idPelicula,int idUsuario, float valoracion){
+        Visualizacion v = em.createQuery("SELECT v FROM Visualizacion v WHERE v.idPelicula= ?1 AND v.idUsuario = ?2",Visualizacion.class)
+                .setParameter(1,idPelicula)
+                .setParameter(2,idUsuario)
+                .getSingleResult();
+        v.setValoracion(valoracion);
+        em.merge(v);
+    }
+
+    public Visualizacion obtenerVisualizacion(int idPelicula,int idUsuario){
+        return em.createQuery("SELECT v FROM Visualizacion v WHERE v.idPelicula= ?1 AND v.idUsuario = ?2",Visualizacion.class)
+                .setParameter(1,idPelicula)
+                .setParameter(2,idUsuario)
+                .getSingleResult();
     }
 
 }

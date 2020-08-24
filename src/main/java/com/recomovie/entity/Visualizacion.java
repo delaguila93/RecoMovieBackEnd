@@ -45,6 +45,11 @@ public class Visualizacion {
 
     }
 
+    public Visualizacion (Usuario u,Pelicula p){
+        this.pelicula = p;
+        this.usuario = u;
+    }
+
     public Visualizacion(int idVisualizacion,float valoracion,Date fechaComentario,String comentario) {
         //this.idVisualizacion = idVisualizacion;
         this.pelicula = new Pelicula();

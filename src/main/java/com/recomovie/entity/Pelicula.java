@@ -132,6 +132,23 @@ public class Pelicula {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        Pelicula p = (Pelicula) o;
+        return this.idPelicula == p.getIdPelicula();
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((titulo == null) ? 0 : titulo.hashCode());
+        result = prime * result + ((genero == null) ? 0 : genero.hashCode());
+        result = prime * result + ((sinopsis == null) ? 0 : sinopsis.hashCode());
+        result = prime * result + ((director == null) ? 0 : director.hashCode());
+        return result;
+    }
+
     public static Pelicula fromDTO (PeliculaDTO p){
         return new Pelicula(p.getIdPelicula(),p.getTitulo(),p.getGenero(),p.getSinopsis(),p.getDirector(),p.getYear(),p.getDuracion());
     }
@@ -148,6 +165,15 @@ public class Pelicula {
             }
         }
         return listado;
+    }
+
+    public boolean existeVisualizacion(Visualizacion visualizacion){
+        for(Visualizacion v : this.visualizaciones){
+            if((v.getUsuario().equals(visualizacion.getUsuario()) ) && v.getPelicula().equals(this)){
+                return true;
+            }
+        }
+        return false;
     }
 
 

@@ -107,18 +107,6 @@ public class Usuario {
         this.peliculasVistas.add(v);
     }
 
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "idUser=" + idUsuario +
-                ", nombreUsuario='" + nombreUsuario + '\'' +
-                ", password='" + password + '\'' +
-                ", eMail='" + eMail + '\'' +
-                ", fechaNacimineto=" + fechaNacimineto +
-                ", peliculasVistas=" + peliculasVistas +
-                '}';
-    }
-
     public static Usuario fromDTO(UsuarioDTO u) throws ParseException {
         return new Usuario(u.getIdUsuario(),u.getNombreUsuario(),u.getPassword(),u.geteMail(), DateFormat.getDateInstance().parse(u.getFechaNacimiento()));
     }
@@ -127,5 +115,32 @@ public class Usuario {
         return new UsuarioDTO(this.idUsuario,this.nombreUsuario,this.password,this.eMail,this.fechaNacimineto.toString(),this.peliculasVistas.size());
     }
 
+    public boolean existeVisualizacion(Visualizacion visualizacion){
+        for(Visualizacion v : this.peliculasVistas){
+            if((v.getPelicula().equals(visualizacion.getPelicula()) ) && v.getUsuario().equals(this)){
+                return true;
+            }
+        }
+        return false;
+    }
 
+
+    @Override
+    public boolean equals(Object o) {
+        Usuario u = (Usuario) o;
+        return this.idUsuario == u.getIdUsuario();
+    }
+
+
+        @Override
+    public String toString() {
+        return "Usuario{" +
+                "idUsuario=" + idUsuario +
+                ", nombreUsuario='" + nombreUsuario + '\'' +
+                ", password='" + password + '\'' +
+                ", eMail='" + eMail + '\'' +
+                ", fechaNacimineto=" + fechaNacimineto +
+                ", peliculasVistas=" + peliculasVistas +
+                '}';
+    }
 }
