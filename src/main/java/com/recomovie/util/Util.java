@@ -1,11 +1,11 @@
-package com.recomovie.util;
-
-
-/*
+/**
  *
  * @author Jose Maria del Aguila Lopez
  *
  */
+
+package com.recomovie.util;
+
 
 public class Util {
 

@@ -1,110 +1,50 @@
+/**
+ *
+ * @author Jose Maria del Aguila Lopez
+ *
+ */
 package com.recomovie.dao;
 
-import com.recomovie.dto.VisualizacionDTO;
+
 import com.recomovie.entity.Pelicula;
-import com.recomovie.entity.Usuario;
 import com.recomovie.entity.Visualizacion;
-import jdk.internal.net.http.common.Pair;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.text.DateFormat;
+
 import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
+
 
 @Repository
-public class PeliculaDAO {
-
-    @PersistenceContext
-    EntityManager em;
+public interface PeliculaDAO extends BaseDAO<Pelicula,Integer> {
 
     //@Transactional(propagation=Propagation.REQUIRED)
 
 
-    public Pelicula getPelicula(int idPelicula){
-        return em.find(Pelicula.class,idPelicula);
-
-    }
-
-    public List<Pelicula> getListadoPeliculas(){
-        return em.createQuery("SELECT p FROM Pelicula p",Pelicula.class).getResultList();
-    }
-
-    public List<Visualizacion> obtenerVisualizaciones(int idPelicula){
-        return em.createQuery("SELECT v FROM Visualizacion v WHERE v.idPelicula = ?1",Visualizacion.class)
-                .setParameter(1,idPelicula)
-                .getResultList();
-    }
+    public List<Visualizacion> obtenerVisualizaciones(int idPelicula);
 
     @Transactional
-    public List<Pair<String, Date>> getComentariosPelicula(int idPelicula){
-        return em.find(Pelicula.class,idPelicula).listadoComentarios();
-    }
+    public List<Visualizacion> getComentariosPelicula(int idPelicula);
 
     @Cacheable(value = "peliculasTitulo")
-    public List<Pelicula> buscarTitulo (String titulo){
-        return em.createQuery("SELECT p FROM Pelicula p WHERE p.titulo LIKE ?1",Pelicula.class)
-                .setParameter(1,"%"+titulo+"%")
-                .getResultList();
-    }
+    public List<Pelicula> buscarTitulo (String titulo);
 
     @Cacheable(value = "peliculasGenero")
-    public List<Pelicula> buscarGenero (String genero){
-        return em.createQuery("SELECT p FROM Pelicula p WHERE p.genero LIKE ?1",Pelicula.class)
-                .setParameter(1,"%"+genero+"%")
-                .getResultList();
-    }
+    public List<Pelicula> buscarGenero (String genero);
 
     @Cacheable (value = "peliculasYear")
-    public List<Pelicula> buscarYear (int year){
-        return em.createQuery("SELECT p FROM pelicula WHERE p.year = ?1",Pelicula.class)
-                .setParameter(1,year)
-                .getResultList();
-    }
+    public List<Pelicula> buscarYear (int year);
 
     @Transactional
-    public void crearVisualizacion(int idPelicula, int idUsuario){
-        Pelicula p = em.find(Pelicula.class,idPelicula);
-        Usuario u = em.find(Usuario.class,idUsuario);
-        Visualizacion visualizacion = new Visualizacion(u,p);
-        p.anadirVisualizacion(visualizacion);
-        u.anadirPeliculaVista(visualizacion);
-        em.merge(p);
-        em.merge(u);
-        em.persist(visualizacion);
-    }
+    public void crearVisualizacion(int idPelicula, int idUsuario);
+    @Transactional
+    public void anadirComentario(int idPelicula,int idUsuario, String fecha, String comentario) throws ParseException ;
 
     @Transactional
-    public void anadirComentario(int idPelicula,int idUsuario, String fecha, String comentario) throws ParseException {
-        Visualizacion v = em.createQuery("SELECT v FROM Visualizacion v WHERE v.idPelicula= ?1 AND v.idUsuario = ?2",Visualizacion.class)
-                .setParameter(1,idPelicula)
-                .setParameter(2,idUsuario)
-                .getSingleResult();
-        v.setFechaComentario(DateFormat.getDateInstance().parse(fecha));
-        v.setComentario(comentario);
-        em.merge(v);
-    }
+    public void anadirValoracion(int idPelicula,int idUsuario, float valoracion);
 
-    @Transactional
-    public void anadirValoracion(int idPelicula,int idUsuario, float valoracion){
-        Visualizacion v = em.createQuery("SELECT v FROM Visualizacion v WHERE v.idPelicula= ?1 AND v.idUsuario = ?2",Visualizacion.class)
-                .setParameter(1,idPelicula)
-                .setParameter(2,idUsuario)
-                .getSingleResult();
-        v.setValoracion(valoracion);
-        em.merge(v);
-    }
-
-    public Visualizacion obtenerVisualizacion(int idPelicula,int idUsuario){
-        return em.createQuery("SELECT v FROM Visualizacion v WHERE v.idPelicula= ?1 AND v.idUsuario = ?2",Visualizacion.class)
-                .setParameter(1,idPelicula)
-                .setParameter(2,idUsuario)
-                .getSingleResult();
-    }
+    public Visualizacion obtenerVisualizacion(int idPelicula,int idUsuario);
 
 }

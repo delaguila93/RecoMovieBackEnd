@@ -1,3 +1,9 @@
+/**
+ *
+ * @author Jose Maria del Aguila Lopez
+ *
+ */
+
 package com.recomovie.entity;
 
 import com.recomovie.dto.VisualizacionDTO;
@@ -7,11 +13,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
-/*
- *
- * @author Jose Maria del Aguila Lopez
- *
- */
+
 @Entity
 @Table(name = "Visualizacion")
 public class Visualizacion {

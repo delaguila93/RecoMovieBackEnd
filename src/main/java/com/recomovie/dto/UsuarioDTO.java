@@ -1,10 +1,12 @@
-package com.recomovie.dto;
-
-/*
+/**
  *
  * @author Jose Maria del Aguila Lopez
  *
  */
+
+package com.recomovie.dto;
+
+
 public class UsuarioDTO {
 
     private int idUsuario;

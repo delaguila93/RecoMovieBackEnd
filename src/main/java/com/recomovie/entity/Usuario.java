@@ -1,4 +1,4 @@
-/*
+/**
  *
  * @author Jose Maria del Aguila Lopez
  *
@@ -13,9 +13,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 @Entity
 @Table(name = "Usuario")
@@ -34,7 +32,7 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private Set<Visualizacion> peliculasVistas;
+    private List<Visualizacion> peliculasVistas;
 
 
     public Usuario() {
@@ -52,7 +50,7 @@ public class Usuario {
         this.password = password;
         this.eMail = eMail;
         this.fechaNacimineto = fechaNacimineto;
-        this.peliculasVistas = new TreeSet<>();
+        this.peliculasVistas = new ArrayList<>();
     }
 
     public int getIdUsuario() {
@@ -95,11 +93,11 @@ public class Usuario {
         this.fechaNacimineto = fechaNacimineto;
     }
 
-    public Set<Visualizacion> getPeliculasVistas() {
+    public List<Visualizacion> getPeliculasVistas() {
         return peliculasVistas;
     }
 
-    public void setPeliculasVistas(Set<Visualizacion> peliculasVistas) {
+    public void setPeliculasVistas(List<Visualizacion> peliculasVistas) {
         this.peliculasVistas = peliculasVistas;
     }
 

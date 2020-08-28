@@ -1,3 +1,9 @@
+/**
+ *
+ * @author Jose Maria del Aguila Lopez
+ *
+ */
+
 package com.recomovie.app;
 
 

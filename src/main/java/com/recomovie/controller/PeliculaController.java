@@ -1,35 +1,38 @@
+/**
+ *
+ * @author Jose Maria del Aguila Lopez
+ *
+ */
+
 package com.recomovie.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.recomovie.dao.PeliculaDAO;
 import com.recomovie.dto.PeliculaDTO;
 import com.recomovie.dto.VisualizacionDTO;
-import com.recomovie.entity.Pelicula;
-import com.recomovie.service.PeliculaService;
+import com.recomovie.service.IPeliculaService;
 import jdk.internal.net.http.common.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-/*
- *
- * @author Jose Maria del Aguila Lopez
- *
- */
+
 @RestController
 @RequestMapping("pelicula")
 public class PeliculaController {
 
 
     @Autowired
-    private PeliculaService servicioPelicula;
+    private IPeliculaService servicioPelicula;
 
+    /**
+     *
+     * @param idPelicula
+     * @return
+     */
     @GetMapping("/obtener-pelicula/{idPelicula}")
     public ResponseEntity<PeliculaDTO> obtenerPelicula(@PathVariable ("idPelicula") Integer idPelicula){
         HttpStatus estado = HttpStatus.OK;
@@ -47,6 +50,11 @@ public class PeliculaController {
 
     }
 
+    /**
+     *
+     * @param titulo El titulo de la pelicula que se desea buscar
+     * @return Las peliculas que encajen con el titulo que se ha dado
+     */
     @GetMapping("/buscar-titulo/{titulo}")
     public ResponseEntity<PeliculaDTO> buscarTitulo(@PathVariable ("titulo") String titulo){
         ResponseEntity respuesta;
@@ -63,6 +71,11 @@ public class PeliculaController {
         return new ResponseEntity(message,estado);
     }
 
+    /**
+     *
+     * @param year
+     * @return
+     */
     @GetMapping("/buscar-year/{year}")
     public ResponseEntity<PeliculaDTO> buscarYear(@PathVariable ("year") Integer year){
         ResponseEntity respuesta;
@@ -78,8 +91,13 @@ public class PeliculaController {
         return new ResponseEntity(mensaje,estado);
     }
 
+
+    /**
+     *
+     * @return
+     */
     @GetMapping("/listado-peliculas")
-    public ResponseEntity<PeliculaDTO> getPeliculas() throws JsonProcessingException {
+    public ResponseEntity<PeliculaDTO> getPeliculas()  {
         ResponseEntity respuesta;
         HttpStatus estado = HttpStatus.OK;
         String message;
@@ -95,7 +113,11 @@ public class PeliculaController {
         return respuesta;
     }
 
-
+    /**
+     *
+     * @param idPelicula
+     * @return
+     */
     @GetMapping("/obtener-comentarios/{idPelicula}")
     public ResponseEntity<Pair<String, Date>> getComentariosPelicula(@PathVariable ("idPelicula") Integer idPelicula){
         ResponseEntity respuesta;
@@ -112,6 +134,12 @@ public class PeliculaController {
         return respuesta;
     }
 
+    /**
+     *
+     * @param idPelicula
+     * @param v
+     * @return
+     */
     @GetMapping("/anadir-valoracion/{idPelicula}")
     public ResponseEntity<String> anadirValoracion(@PathVariable ("idPelicula") Integer idPelicula, @RequestParam ("visualizacion") VisualizacionDTO v){
         HttpStatus estado = HttpStatus.OK;
@@ -126,6 +154,12 @@ public class PeliculaController {
         return new ResponseEntity(mensaje,estado);
     }
 
+    /**
+     *
+     * @param idPelicula
+     * @param v
+     * @return
+     */
     @GetMapping("/anadir-comentario/{idPelicula}")
     public ResponseEntity<String> anadirComentario(@PathVariable ("idPelicula") Integer idPelicula,@RequestParam ("visualizacion") VisualizacionDTO v){
         HttpStatus estado = HttpStatus.OK;

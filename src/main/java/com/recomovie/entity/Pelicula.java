@@ -1,3 +1,9 @@
+/**
+ *
+ * @author Jose Maria del Aguila Lopez
+ *
+ */
+
 package com.recomovie.entity;
 
 import com.recomovie.dto.PeliculaDTO;
@@ -25,7 +31,7 @@ public class Pelicula {
 
     @OneToMany(mappedBy = "pelicula")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private Set<Visualizacion> visualizaciones;
+    private List<Visualizacion> visualizaciones;
 
 
     public Pelicula(){
@@ -36,7 +42,7 @@ public class Pelicula {
         this.director = "";
         this.year = -999999;
         this.duracion = -9999999;
-        this.visualizaciones = new TreeSet<>();
+        this.visualizaciones = new ArrayList<>();
     }
 
     public Pelicula(int idPelicula, String titulo, String genero, String sinopsis, String director, int year, int duracion) {
@@ -47,7 +53,7 @@ public class Pelicula {
         this.director = director;
         this.year = year;
         this.duracion = duracion;
-        this.visualizaciones = new TreeSet<>();
+        this.visualizaciones = new ArrayList<>();
     }
 
     public int getIdPelicula() {
@@ -106,11 +112,11 @@ public class Pelicula {
         this.duracion = duracion;
     }
 
-    public Set<Visualizacion> getVisualizaciones() {
+    public List<Visualizacion> getVisualizaciones() {
         return visualizaciones;
     }
 
-    public void setVisualizaciones(Set<Visualizacion> visualizaciones) {
+    public void setVisualizaciones(List<Visualizacion> visualizaciones) {
         this.visualizaciones = visualizaciones;
     }
 
@@ -157,15 +163,16 @@ public class Pelicula {
         return new PeliculaDTO(this.idPelicula,this.titulo,this.genero,this.sinopsis,this.director,this.year,this.duracion,this.visualizaciones.size());
     }
 
-    public List<Pair<String, Date>> listadoComentarios(){
-        List<Pair<String, Date>> listado = new ArrayList<>();
+    public List<Visualizacion> listadoComentarios(){
+        List<Visualizacion> listado = new ArrayList<>();
         for(Visualizacion v : visualizaciones){
             if(v.getFechaComentario() != null && v.getPelicula().getIdPelicula() == this.idPelicula) {
-                listado.add(new Pair<String,Date>(v.getComentario(),v.getFechaComentario()));
+                listado.add(v);
             }
         }
         return listado;
     }
+
 
     public boolean existeVisualizacion(Visualizacion visualizacion){
         for(Visualizacion v : this.visualizaciones){
