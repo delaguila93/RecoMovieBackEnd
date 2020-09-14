@@ -7,6 +7,8 @@
 package com.recomovie.daoimp;
 
 import com.recomovie.dao.UsuarioDAO;
+import com.recomovie.dto.VisualizacionDTO;
+import com.recomovie.entity.Pelicula;
 import com.recomovie.entity.Usuario;
 import com.recomovie.entity.Visualizacion;
 import org.springframework.cache.annotation.Cacheable;
@@ -51,6 +53,7 @@ public class UsuarioDAOImp implements UsuarioDAO {
 
     }
 
+    @Cacheable(value = "listadoUsuarios")
     public List<Usuario> obtenerTodos(){
         return em.createQuery("SELECT u FROM Usuario u",Usuario.class).getResultList();
     }
@@ -60,5 +63,28 @@ public class UsuarioDAOImp implements UsuarioDAO {
     @Cacheable(value = "peliculasVistas")
     public List<Visualizacion> peliculasVistas(int idUsuario){
         return em.find(Usuario.class,idUsuario).getPeliculasVistas();
+    }
+
+    public Usuario comprobarLogin(Usuario u){
+        return em.createQuery("SELECT u FROM Usuario u WHERE u.nombreUsuario = ?1 AND u.password = ?2",Usuario.class)
+                .setParameter(1,u.getNombreUsuario())
+                .setParameter(2,u.getPassword())
+                .getSingleResult();
+    }
+
+    public Usuario comprobarUsuario(String u){
+        return em.createQuery("SELECT u FROM Usuario u WHERE u.nombreUsuario = ?1",Usuario.class)
+                .setParameter(1,u)
+                .getSingleResult();
+    }
+
+
+    public void eliminarPeliculaVista( int idVisualizacion) {
+        Visualizacion v = em.find(Visualizacion.class,idVisualizacion);
+        Usuario u = em.find(Usuario.class,v.getUsuario().getIdUsuario());
+        Pelicula p = em.find(Pelicula.class,v.getPelicula().getIdPelicula());
+        u.quitarPeliculaVista(v);
+        p.quitarVisualizacion(v);
+        em.remove(em.merge(idVisualizacion));
     }
 }

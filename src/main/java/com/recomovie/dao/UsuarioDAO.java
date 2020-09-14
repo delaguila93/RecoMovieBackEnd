@@ -21,4 +21,10 @@ public interface UsuarioDAO extends BaseDAO<Usuario,Integer> {
 
     @Cacheable(value = "peliculasVistas")
     public List<Visualizacion> peliculasVistas(int idUsuario);
+
+    public Usuario comprobarLogin(Usuario u);
+
+    public Usuario comprobarUsuario(String u);
+
+    public void eliminarPeliculaVista( int idVisualizacion);
 }

@@ -59,7 +59,16 @@ public class UsuarioService implements IUsuarioService {
         return peliculasVistas;
     }
 
+    public boolean comprobarLogin(UsuarioDTO usuario) throws ParseException {
+        return usuarioDao.comprobarLogin(Usuario.fromDTO(usuario)) != null;
+    }
 
+    public boolean comprobarUsuario(String usuario) throws ParseException {
+        return usuarioDao.comprobarUsuario(usuario) != null;
+    }
 
+    public void eliminarPeliculaVista(int idVisualizacion) {
+        usuarioDao.eliminarPeliculaVista(idVisualizacion);
+    }
 
 }

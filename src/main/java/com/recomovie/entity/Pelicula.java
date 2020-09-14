@@ -7,7 +7,6 @@
 package com.recomovie.entity;
 
 import com.recomovie.dto.PeliculaDTO;
-import jdk.internal.net.http.common.Pair;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -20,6 +19,7 @@ import java.util.*;
 public class Pelicula {
     @Id
     @Column(name = "idPelicula")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idPelicula;
     private String titulo;
     private String genero;
@@ -183,5 +183,8 @@ public class Pelicula {
         return false;
     }
 
+    public void quitarVisualizacion(Visualizacion v){
+        this.visualizaciones.remove(v);
+    }
 
 }

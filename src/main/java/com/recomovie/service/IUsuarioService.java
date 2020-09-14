@@ -23,4 +23,11 @@ public interface IUsuarioService {
     public void editarUsuario(UsuarioDTO usuario) throws ParseException;
 
     public List<VisualizacionDTO> obtenerPeliculasVistas(int idUsuario);
+
+    public boolean comprobarLogin(UsuarioDTO usuario) throws ParseException;
+
+    public boolean comprobarUsuario(String usuario) throws ParseException;
+
+    public void eliminarPeliculaVista(int idVisualizacion);
+
 }

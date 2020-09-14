@@ -75,7 +75,7 @@ public class PeliculaService implements IPeliculaService {
     }
 
     /**
-     *
+     * Funcion que busca las obtiene las peliculas segun el genero o generos dado
      * @param genero
      * @return Listado de peliculas por genero
      */
@@ -94,6 +94,11 @@ public class PeliculaService implements IPeliculaService {
         return listadoPeliculas;
     }
 
+    /**
+     *
+     * @param year
+     * @return
+     */
     public List<PeliculaDTO> buscarYear(int year){
         List<PeliculaDTO> listadoPeliculas = new ArrayList<>();
         List<Pelicula> lista = peliculaDao.buscarYear(year);
@@ -117,6 +122,14 @@ public class PeliculaService implements IPeliculaService {
             peliculaDao.crearVisualizacion(v.getIdPelicula(),v.getIdUsuario());
         }
         peliculaDao.anadirComentario(v.getIdPelicula(), v.getIdUsuario(),v.getFechaComentario(),v.getComentario());
+    }
+
+    public void editarComentario(VisualizacionDTO v) throws ParseException {
+        peliculaDao.editarComentario(Visualizacion.fromDTO(v));
+    }
+
+    public void editarValoracion(VisualizacionDTO v) throws ParseException {
+        peliculaDao.editarValoracion(Visualizacion.fromDTO(v));
     }
 
 

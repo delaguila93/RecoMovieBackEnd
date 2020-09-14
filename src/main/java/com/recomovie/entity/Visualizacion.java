@@ -19,6 +19,7 @@ import java.util.List;
 public class Visualizacion {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idVisualizacion;
 
     @ManyToOne
@@ -53,7 +54,6 @@ public class Visualizacion {
     }
 
     public Visualizacion(int idVisualizacion,float valoracion,Date fechaComentario,String comentario) {
-        //this.idVisualizacion = idVisualizacion;
         this.pelicula = new Pelicula();
         this.usuario = new Usuario();
         this.valoracion = valoracion;

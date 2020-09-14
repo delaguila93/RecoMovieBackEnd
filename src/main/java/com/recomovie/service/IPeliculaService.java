@@ -8,7 +8,6 @@ package com.recomovie.service;
 
 import com.recomovie.dto.PeliculaDTO;
 import com.recomovie.dto.VisualizacionDTO;
-import jdk.internal.net.http.common.Pair;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -31,4 +30,8 @@ public interface IPeliculaService {
     public void anadirValoracion(VisualizacionDTO v);
 
     public void anadirComentario(VisualizacionDTO v) throws ParseException;
+
+    public void editarComentario(VisualizacionDTO v) throws ParseException;
+
+    public void editarValoracion(VisualizacionDTO v) throws ParseException;
 }

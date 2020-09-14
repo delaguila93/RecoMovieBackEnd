@@ -131,4 +131,22 @@ public class PeliculaDAOImp implements PeliculaDAO {
                 .getSingleResult();
     }
 
+    public void editarValoracion(Visualizacion v){
+        Visualizacion visualizacion = em.createQuery("SELECT v FROM Visualizacion v WHERE v.idVisualizacion = ?1",Visualizacion.class)
+                .setParameter(1,v.getIdVisualizacion())
+                .getSingleResult();
+        visualizacion.setValoracion(v.getValoracion());
+        em.merge(visualizacion);
+    }
+
+    public void editarComentario(Visualizacion v){
+        Visualizacion visualizacion = em.createQuery("SELECT v FROM Visualizacion v WHERE v.idVisualizacion = ?1",Visualizacion.class)
+                .setParameter(1,v.getIdVisualizacion())
+                .getSingleResult();
+
+        visualizacion.setFechaComentario(v.getFechaComentario());
+        visualizacion.setComentario(v.getComentario());
+        em.merge(visualizacion);
+    }
+
 }

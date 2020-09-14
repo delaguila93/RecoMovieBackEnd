@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.recomovie.dto.PeliculaDTO;
 import com.recomovie.dto.VisualizacionDTO;
 import com.recomovie.service.IPeliculaService;
-import jdk.internal.net.http.common.Pair;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -97,7 +97,7 @@ public class PeliculaController {
      * @return
      */
     @GetMapping("/listado-peliculas")
-    public ResponseEntity<PeliculaDTO> getPeliculas()  {
+    public ResponseEntity<PeliculaDTO> obtenerListadoPeliculas()  {
         ResponseEntity respuesta;
         HttpStatus estado = HttpStatus.OK;
         String message;
@@ -119,7 +119,7 @@ public class PeliculaController {
      * @return
      */
     @GetMapping("/obtener-comentarios/{idPelicula}")
-    public ResponseEntity<Pair<String, Date>> getComentariosPelicula(@PathVariable ("idPelicula") Integer idPelicula){
+    public ResponseEntity<VisualizacionDTO> getComentariosPelicula(@PathVariable ("idPelicula") Integer idPelicula){
         ResponseEntity respuesta;
         HttpStatus status = HttpStatus.OK;
         String mensaje = "";
@@ -141,7 +141,7 @@ public class PeliculaController {
      * @return
      */
     @GetMapping("/anadir-valoracion/{idPelicula}")
-    public ResponseEntity<String> anadirValoracion(@PathVariable ("idPelicula") Integer idPelicula, @RequestParam ("visualizacion") VisualizacionDTO v){
+    public ResponseEntity<String> anadirValoracion(@PathVariable ("idPelicula") Integer idPelicula, @RequestBody VisualizacionDTO v){
         HttpStatus estado = HttpStatus.OK;
         String mensaje = "";
         try{
@@ -161,12 +161,26 @@ public class PeliculaController {
      * @return
      */
     @GetMapping("/anadir-comentario/{idPelicula}")
-    public ResponseEntity<String> anadirComentario(@PathVariable ("idPelicula") Integer idPelicula,@RequestParam ("visualizacion") VisualizacionDTO v){
+    public ResponseEntity<String> anadirComentario(@PathVariable ("idPelicula") Integer idPelicula,@RequestBody VisualizacionDTO v){
         HttpStatus estado = HttpStatus.OK;
         String mensaje = "";
         try{
             servicioPelicula.anadirComentario(v);
             mensaje = "Comentario añadido correctamente";
+        }catch (Exception e){
+            mensaje = e.getMessage();
+            estado = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(mensaje,estado);
+    }
+
+    @GetMapping("/editar-comentario")
+    public ResponseEntity<String> editarComentario(@RequestBody VisualizacionDTO v){
+        HttpStatus estado = HttpStatus.OK;
+        String mensaje = "";
+        try{
+            servicioPelicula.editarComentario(v);
+            mensaje = "Comentario editado correctamente";
         }catch (Exception e){
             mensaje = e.getMessage();
             estado = HttpStatus.INTERNAL_SERVER_ERROR;

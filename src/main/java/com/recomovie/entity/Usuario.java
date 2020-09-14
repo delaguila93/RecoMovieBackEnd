@@ -21,6 +21,7 @@ public class Usuario {
 
     @Id
     @Column( name="idUsuario")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idUsuario;
     @Column( name="nombreUsuario")
     private String nombreUsuario;
@@ -34,9 +35,10 @@ public class Usuario {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Visualizacion> peliculasVistas;
 
-
+    /**
+     * Contructor por defecto de Usuario
+     */
     public Usuario() {
-        this.idUsuario = -1;
         this.nombreUsuario = "";
         this.password = "";
         this.eMail = "";
@@ -44,8 +46,14 @@ public class Usuario {
         this.peliculasVistas = null;
     }
 
-    public Usuario(int idUsuario, String nombreUsuario, String password, String eMail, Date fechaNacimineto) {
-        this.idUsuario = idUsuario;
+    /**
+     * Contructor parametrizado de Usuario
+     * @param nombreUsuario
+     * @param password
+     * @param eMail
+     * @param fechaNacimineto
+     */
+    public Usuario( String nombreUsuario, String password, String eMail, Date fechaNacimineto) {
         this.nombreUsuario = nombreUsuario;
         this.password = password;
         this.eMail = eMail;
@@ -53,6 +61,7 @@ public class Usuario {
         this.peliculasVistas = new ArrayList<>();
     }
 
+    /* -- Metodos Get y Set de los atributos de Usuario -- */
     public int getIdUsuario() {
         return idUsuario;
     }
@@ -105,14 +114,29 @@ public class Usuario {
         this.peliculasVistas.add(v);
     }
 
+    /**
+     * Funcion que convierte del DTO de Usuario a Usuario
+     * @param u El DTO del Usuario
+     * @return El usuario convertido a partir del DTO
+     * @throws ParseException
+     */
     public static Usuario fromDTO(UsuarioDTO u) throws ParseException {
-        return new Usuario(u.getIdUsuario(),u.getNombreUsuario(),u.getPassword(),u.geteMail(), DateFormat.getDateInstance().parse(u.getFechaNacimiento()));
+        return new Usuario(u.getNombreUsuario(),u.getPassword(),u.geteMail(), DateFormat.getDateInstance().parse(u.getFechaNacimiento()));
     }
 
+    /**
+     * Funcion que convierte el Usuario a DTO
+     * @return
+     */
     public UsuarioDTO toDTO(){
         return new UsuarioDTO(this.idUsuario,this.nombreUsuario,this.password,this.eMail,this.fechaNacimineto.toString(),this.peliculasVistas.size());
     }
 
+    /**
+     * Funcion que revisa si el usuario ha visto la pelicula
+     * @param visualizacion
+     * @return Si el usuario ha visto la pelicula
+     */
     public boolean existeVisualizacion(Visualizacion visualizacion){
         for(Visualizacion v : this.peliculasVistas){
             if((v.getPelicula().equals(visualizacion.getPelicula()) ) && v.getUsuario().equals(this)){
@@ -122,6 +146,9 @@ public class Usuario {
         return false;
     }
 
+    public void quitarPeliculaVista(Visualizacion v){
+        this.peliculasVistas.remove(v);
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -130,7 +157,7 @@ public class Usuario {
     }
 
 
-        @Override
+    @Override
     public String toString() {
         return "Usuario{" +
                 "idUsuario=" + idUsuario +

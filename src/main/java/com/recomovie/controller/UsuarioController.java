@@ -23,7 +23,7 @@ public class UsuarioController {
     private IUsuarioService servicioUsuario;
 
     /**
-     *
+     * Funcion que recibe un usuario nuevo para registrarlo en la BBDD
      * @param usuarioNuevo El usuario nuevo que se ha registrado
      * @return Mensaje de confirmacion de 
      */
@@ -43,7 +43,7 @@ public class UsuarioController {
     }
 
     /**
-     *
+     * Funcion que develve el usuario dado
      * @param idUsuario
      * @return
      */
@@ -63,7 +63,7 @@ public class UsuarioController {
     }
 
     /**
-     *
+     * Funcion que borra el usuario dado
      * @param idUsuario
      * @return
      */
@@ -85,13 +85,13 @@ public class UsuarioController {
     }
 
     /**
-     *
-     * @param idUsuario
-     * @param usuarioModificado
-     * @return
+     * Funcion que recibe la llamada con el usuario y los datos del usuario dado modificado
+     * @param idUsuario El usuario a modificar
+     * @param usuarioModificado los datos del usuario modificados
+     * @return La confirmacion de que el usuario ha sido modificado
      */
     @GetMapping("/editar/{idUsuario}")
-    public ResponseEntity editarUsuario(@PathVariable ("idUsuario") Integer idUsuario,@RequestParam ("usuarioModificado") UsuarioDTO usuarioModificado){
+    public ResponseEntity editarUsuario(@PathVariable ("idUsuario") Integer idUsuario,@RequestBody UsuarioDTO usuarioModificado){
         String mensaje = "";
         HttpStatus estado = HttpStatus.OK;
         try{
@@ -106,9 +106,9 @@ public class UsuarioController {
     }
 
     /**
-     *
+     * Funcion que devuelve las peliculas que ha visto el usuario
      * @param idUsuario
-     * @return
+     * @return Las peliculas vistas por el usuario dado
      */
     @GetMapping("/peliculasVistas/{idUsuario}")
     public ResponseEntity obtenerPeliculasVistas(@PathVariable ("idUsuario") Integer idUsuario){
@@ -124,5 +124,69 @@ public class UsuarioController {
         }
         return new ResponseEntity(mensaje,estado);
 
+    }
+
+    /**
+     * Funcion que comprueba si se puede logear el usuario
+     * @param usuario
+     * @return La respuesta indicando si existe el usuario pasado
+     */
+    @GetMapping("/comprobarLogin")
+    public ResponseEntity comprobarLogin(@RequestBody UsuarioDTO usuario){
+        String mensaje = "";
+        HttpStatus estado = HttpStatus.OK;
+        try{
+            if(servicioUsuario.comprobarLogin(usuario)){
+                mensaje = "Existe el usuario";
+            }else{
+                mensaje = "No existe el usuario";
+            }
+        }catch (Exception e){
+            mensaje = e.getMessage();
+            estado = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(mensaje,estado);
+    }
+
+    /**
+     * Funcion que comprueba si existe ese nombre de usuario
+     * @param usuario
+     * @return La respuesta indicando si existe el usuario pasado
+     */
+    @GetMapping("/comprobarUsuario")
+    public ResponseEntity comprobarUsuario(@RequestParam ("usuario") String usuario){
+        String mensaje = "";
+        HttpStatus estado = HttpStatus.OK;
+        try{
+            if(servicioUsuario.comprobarUsuario(usuario)){
+                mensaje = "Existe ese nombre de usuario";
+            }else{
+                mensaje = "No existe ese nombre de usuario";
+            }
+        }catch (Exception e){
+            mensaje = e.getMessage();
+            estado = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(mensaje,estado);
+    }
+
+    /**
+     *
+     * @param idVisualizacion
+     * @return
+     */
+    @GetMapping("/borrarVisual/{idVisualizacion}")
+    public ResponseEntity eliminarVisualizacion(@PathVariable ("idVisualizacion") Integer idVisualizacion){
+        String mensaje = "";
+        HttpStatus estado = HttpStatus.OK;
+        try{
+            servicioUsuario.eliminarPeliculaVista(idVisualizacion);
+            mensaje = "Pelicula vista eliminada de la lista de peliculas vistas";
+        }catch (Exception e){
+            mensaje = e.getMessage();
+            estado = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        return new ResponseEntity(mensaje,estado);
     }
 }

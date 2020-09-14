@@ -47,4 +47,8 @@ public interface PeliculaDAO extends BaseDAO<Pelicula,Integer> {
 
     public Visualizacion obtenerVisualizacion(int idPelicula,int idUsuario);
 
+    public void editarValoracion(Visualizacion v);
+
+    public void editarComentario(Visualizacion v);
+
 }
