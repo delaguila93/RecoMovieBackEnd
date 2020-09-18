@@ -159,9 +159,9 @@ public class UsuarioController {
         HttpStatus estado = HttpStatus.OK;
         try{
             if(servicioUsuario.comprobarUsuario(usuario)){
-                mensaje = "Existe ese nombre de usuario";
+                mensaje = "Existe";
             }else{
-                mensaje = "No existe ese nombre de usuario";
+                mensaje = "No existe";
             }
         }catch (Exception e){
             mensaje = e.getMessage();
@@ -187,6 +187,20 @@ public class UsuarioController {
             estado = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
+        return new ResponseEntity(mensaje,estado);
+    }
+
+    @GetMapping("/obtenerUsuario/{nombreUsuario}")
+    public ResponseEntity obtenerUsuario(@PathVariable ("nombreUsuario") String nombreUsuario){
+        String mensaje = "";
+        HttpStatus estado = HttpStatus.OK;
+        ObjectMapper obj = new ObjectMapper();
+        try{
+
+        }catch (Exception e){
+            mensaje = e.getMessage();
+            estado = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
         return new ResponseEntity(mensaje,estado);
     }
 }

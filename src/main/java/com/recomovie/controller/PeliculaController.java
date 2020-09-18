@@ -78,7 +78,6 @@ public class PeliculaController {
      */
     @GetMapping("/buscar-year/{year}")
     public ResponseEntity<PeliculaDTO> buscarYear(@PathVariable ("year") Integer year){
-        ResponseEntity respuesta;
         HttpStatus estado = HttpStatus.OK;
         String mensaje = "";
         ObjectMapper obj = new ObjectMapper();
@@ -91,6 +90,24 @@ public class PeliculaController {
         return new ResponseEntity(mensaje,estado);
     }
 
+    /**
+     * 
+     * @param generos
+     * @return
+     */
+    @GetMapping("buscar-genero")
+    public ResponseEntity<PeliculaDTO> buscarGenero(@RequestBody String generos){
+        String mensaje = "";
+        HttpStatus estado = HttpStatus.OK;
+        ObjectMapper obj = new ObjectMapper();
+        try{
+            mensaje = obj.writeValueAsString(servicioPelicula.buscarGenero(generos));
+        }catch (Exception e){
+            mensaje = e.getMessage();
+            estado = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(mensaje,estado);
+    }
 
     /**
      *
