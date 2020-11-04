@@ -7,8 +7,10 @@
 package com.recomovie.serviceimp;
 
 import com.recomovie.dao.UsuarioDAO;
+import com.recomovie.dto.PeliculaDTO;
 import com.recomovie.dto.UsuarioDTO;
 import com.recomovie.dto.VisualizacionDTO;
+import com.recomovie.entity.Pelicula;
 import com.recomovie.entity.Usuario;
 import com.recomovie.entity.Visualizacion;
 import com.recomovie.service.IUsuarioService;
@@ -44,11 +46,16 @@ public class UsuarioService implements IUsuarioService {
         usuarioDao.borra(idUsuario);
     }
 
-    public void editarUsuario(UsuarioDTO usuario) throws ParseException {
+    public boolean editarUsuario(UsuarioDTO usuario) throws ParseException {
         Usuario u = Usuario.fromDTO(usuario);
-        usuarioDao.actualiza(u);
-    }
+        if(usuarioDao.obtenerUsuarioNombre(u.getNombreUsuario()) != null){
+            return false;
+        }else{
+            usuarioDao.actualiza(u);
+            return true;
+        }
 
+    }
 
     public List<VisualizacionDTO> obtenerPeliculasVistas(int idUsuario){
         List<Visualizacion> peliculas = usuarioDao.peliculasVistas(idUsuario);
@@ -64,11 +71,24 @@ public class UsuarioService implements IUsuarioService {
     }
 
     public boolean comprobarUsuario(String usuario) throws ParseException {
-        return usuarioDao.comprobarUsuario(usuario) != null;
+        return usuarioDao.obtenerUsuarioNombre(usuario) != null;
     }
 
     public void eliminarPeliculaVista(int idVisualizacion) {
         usuarioDao.eliminarPeliculaVista(idVisualizacion);
+    }
+
+    public List<PeliculaDTO> obtenerPeliculas(int idUsuario){
+        List<Pelicula> peliculasVisualizadas = usuarioDao.obtenerPeliculasVisualizadas(idUsuario);
+        List<PeliculaDTO> peliculaDTOS = new ArrayList<>();
+        for(Pelicula p : peliculasVisualizadas){
+            peliculaDTOS.add(p.toDTO());
+        }
+        return peliculaDTOS;
+    }
+
+    public UsuarioDTO verUsuarioNombre(String nombreUsuario){
+        return usuarioDao.obtenerUsuarioNombre(nombreUsuario).toDTO();
     }
 
 }

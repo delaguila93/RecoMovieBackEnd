@@ -72,12 +72,11 @@ public class UsuarioDAOImp implements UsuarioDAO {
                 .getSingleResult();
     }
 
-    public Usuario comprobarUsuario(String u){
+    public Usuario obtenerUsuarioNombre(String u){
         return em.createQuery("SELECT u FROM Usuario u WHERE u.nombreUsuario = ?1",Usuario.class)
                 .setParameter(1,u)
                 .getSingleResult();
     }
-
 
     public void eliminarPeliculaVista( int idVisualizacion) {
         Visualizacion v = em.find(Visualizacion.class,idVisualizacion);
@@ -86,5 +85,11 @@ public class UsuarioDAOImp implements UsuarioDAO {
         u.quitarPeliculaVista(v);
         p.quitarVisualizacion(v);
         em.remove(em.merge(idVisualizacion));
+    }
+
+    public List<Pelicula> obtenerPeliculasVisualizadas(int idUsuario){
+        return em.createQuery("SELECT p FROM Pelicula p, Visualizacion v WHERE p.idPelicula = v.idPelicula AND v.idUsuario = ?1",Pelicula.class)
+                .setParameter(1,idUsuario)
+                .getResultList();
     }
 }

@@ -29,11 +29,12 @@ public class UsuarioController {
      */
     @GetMapping("/crear")
     public ResponseEntity crearUsuario(@RequestParam ("usuario") UsuarioDTO usuarioNuevo){
-        HttpStatus estado = HttpStatus.OK;
+        HttpStatus estado ;
         String mensaje = " ";
         try{
             servicioUsuario.crearUsuario(usuarioNuevo);
             mensaje = "Usuario creado correctamente";
+            estado = HttpStatus.OK;
         }catch(Exception e){
             mensaje = e.getMessage();
             estado = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -95,8 +96,11 @@ public class UsuarioController {
         String mensaje = "";
         HttpStatus estado = HttpStatus.OK;
         try{
-            servicioUsuario.editarUsuario(usuarioModificado);
-            mensaje = "Usuario editado correctamente";
+            if(servicioUsuario.editarUsuario(usuarioModificado)){
+                mensaje = "Modificado";
+            }else{
+                mensaje = "No modificado ";
+            }
         }catch (Exception e){
             mensaje = e.getMessage();
             estado = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -107,7 +111,7 @@ public class UsuarioController {
 
     /**
      * Funcion que devuelve las peliculas que ha visto el usuario
-     * @param idUsuario
+     * @param idUsuario El usuario a buscar para devolver las peliculas vistas
      * @return Las peliculas vistas por el usuario dado
      */
     @GetMapping("/peliculasVistas/{idUsuario}")
@@ -128,7 +132,7 @@ public class UsuarioController {
 
     /**
      * Funcion que comprueba si se puede logear el usuario
-     * @param usuario
+     * @param usuario Datos del usuario para comprobar si el login es correcto
      * @return La respuesta indicando si existe el usuario pasado
      */
     @GetMapping("/comprobarLogin")
@@ -150,19 +154,20 @@ public class UsuarioController {
 
     /**
      * Funcion que comprueba si existe ese nombre de usuario
-     * @param usuario
+     * @param usuario Nombre de ususario a comprobar
      * @return La respuesta indicando si existe el usuario pasado
      */
-    @GetMapping("/comprobarUsuario")
-    public ResponseEntity comprobarUsuario(@RequestParam ("usuario") String usuario){
+    @GetMapping("/comprobarUsuario/{usuario}")
+    public ResponseEntity comprobarUsuario(@PathVariable ("usuario") String usuario){
         String mensaje = "";
-        HttpStatus estado = HttpStatus.OK;
+        HttpStatus estado ;
         try{
             if(servicioUsuario.comprobarUsuario(usuario)){
                 mensaje = "Existe";
             }else{
                 mensaje = "No existe";
             }
+            estado = HttpStatus.OK;
         }catch (Exception e){
             mensaje = e.getMessage();
             estado = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -171,8 +176,8 @@ public class UsuarioController {
     }
 
     /**
-     *
-     * @param idVisualizacion
+     * Funcion que borra la pelicula de peliculas vistas
+     * @param idVisualizacion El identificador de la visualizacion a borrar
      * @return
      */
     @GetMapping("/borrarVisual/{idVisualizacion}")
@@ -190,13 +195,37 @@ public class UsuarioController {
         return new ResponseEntity(mensaje,estado);
     }
 
+    /**
+     * Funcion que devuelve el usuario dado el nombre de usuario
+     * @param nombreUsuario Nombre de ususario a buscar en la BBDD
+     * @return
+     */
     @GetMapping("/obtenerUsuario/{nombreUsuario}")
     public ResponseEntity obtenerUsuario(@PathVariable ("nombreUsuario") String nombreUsuario){
         String mensaje = "";
         HttpStatus estado = HttpStatus.OK;
         ObjectMapper obj = new ObjectMapper();
         try{
+            mensaje = obj.writeValueAsString(servicioUsuario.verUsuarioNombre(nombreUsuario));
+        }catch (Exception e){
+            mensaje = e.getMessage();
+            estado = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(mensaje,estado);
+    }
 
+    /**
+     * Funcion que devuelve los datos de las peliculas que el usuario ha visto
+     * @param idUsuario Identificador de Usuario 
+     * @return
+     */
+    @GetMapping("/obtenerDatosPeliculas/{idUsuario}")
+    public ResponseEntity obtenerDatosPeliculas(@PathVariable ("idUsuario") Integer idUsuario){
+        String mensaje = "";
+        HttpStatus estado = HttpStatus.OK;
+        ObjectMapper obj = new ObjectMapper();
+        try{
+            mensaje = obj.writeValueAsString(servicioUsuario.obtenerPeliculas(idUsuario));
         }catch (Exception e){
             mensaje = e.getMessage();
             estado = HttpStatus.INTERNAL_SERVER_ERROR;

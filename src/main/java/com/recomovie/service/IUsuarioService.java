@@ -6,6 +6,7 @@
 
 package com.recomovie.service;
 
+import com.recomovie.dto.PeliculaDTO;
 import com.recomovie.dto.UsuarioDTO;
 import com.recomovie.dto.VisualizacionDTO;
 
@@ -20,7 +21,7 @@ public interface IUsuarioService {
 
     public void borrarUsuario(int idUsuario);
 
-    public void editarUsuario(UsuarioDTO usuario) throws ParseException;
+    public boolean editarUsuario(UsuarioDTO usuario) throws ParseException;
 
     public List<VisualizacionDTO> obtenerPeliculasVistas(int idUsuario);
 
@@ -29,5 +30,9 @@ public interface IUsuarioService {
     public boolean comprobarUsuario(String usuario) throws ParseException;
 
     public void eliminarPeliculaVista(int idVisualizacion);
+
+    public List<PeliculaDTO> obtenerPeliculas(int idUsuario);
+
+    public UsuarioDTO verUsuarioNombre(String nombreUsuario);
 
 }

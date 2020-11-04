@@ -30,8 +30,8 @@ public class PeliculaController {
 
     /**
      *
-     * @param idPelicula
-     * @return
+     * @param idPelicula El identificador de la pelicula
+     * @return Los datos la pelicula proporcionada
      */
     @GetMapping("/obtener-pelicula/{idPelicula}")
     public ResponseEntity<PeliculaDTO> obtenerPelicula(@PathVariable ("idPelicula") Integer idPelicula){
@@ -73,8 +73,8 @@ public class PeliculaController {
 
     /**
      *
-     * @param year
-     * @return
+     * @param year El año de las peliculas para
+     * @return La lista de las peliculas cuyo año coincidan con el año dado
      */
     @GetMapping("/buscar-year/{year}")
     public ResponseEntity<PeliculaDTO> buscarYear(@PathVariable ("year") Integer year){
@@ -111,7 +111,7 @@ public class PeliculaController {
 
     /**
      *
-     * @return
+     * @return El listado completo de peliculas
      */
     @GetMapping("/listado-peliculas")
     public ResponseEntity<PeliculaDTO> obtenerListadoPeliculas()  {
@@ -132,8 +132,8 @@ public class PeliculaController {
 
     /**
      *
-     * @param idPelicula
-     * @return
+     * @param idPelicula Identificador de la pelicula de la cual queremos obtener los comentarios
+     * @return El listado de comentarios de la pelicula proporcionada
      */
     @GetMapping("/obtener-comentarios/{idPelicula}")
     public ResponseEntity<VisualizacionDTO> getComentariosPelicula(@PathVariable ("idPelicula") Integer idPelicula){
@@ -153,9 +153,9 @@ public class PeliculaController {
 
     /**
      *
-     * @param idPelicula
-     * @param v
-     * @return
+     * @param idPelicula Identificador de la pelicula a la que añadir la valoracion
+     * @param v La Valoracion de la pelicula a añadir
+     * @return Mensaje de confirmacion de que la valoracion ha sido añadida
      */
     @GetMapping("/anadir-valoracion/{idPelicula}")
     public ResponseEntity<String> anadirValoracion(@PathVariable ("idPelicula") Integer idPelicula, @RequestBody VisualizacionDTO v){
@@ -173,9 +173,9 @@ public class PeliculaController {
 
     /**
      *
-     * @param idPelicula
-     * @param v
-     * @return
+     * @param idPelicula Identificador de la pelicula a la que añadir el comentario
+     * @param v La fecha y el contenido del comentario a añadir
+     * @return Mensaje de conformacion de que el comentario ha sido añadido correctamente
      */
     @GetMapping("/anadir-comentario/{idPelicula}")
     public ResponseEntity<String> anadirComentario(@PathVariable ("idPelicula") Integer idPelicula,@RequestBody VisualizacionDTO v){
@@ -191,6 +191,11 @@ public class PeliculaController {
         return new ResponseEntity(mensaje,estado);
     }
 
+    /**
+     *
+     * @param v Comentario editado
+     * @return Mensaje que confirma los cambios de comentario
+     */
     @GetMapping("/editar-comentario")
     public ResponseEntity<String> editarComentario(@RequestBody VisualizacionDTO v){
         HttpStatus estado = HttpStatus.OK;
