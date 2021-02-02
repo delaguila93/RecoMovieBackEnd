@@ -19,7 +19,9 @@ import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,10 +32,13 @@ public class UsuarioService implements IUsuarioService {
 
     public void crearUsuario(UsuarioDTO u) throws ParseException {
         Usuario usuarioNuevo = new Usuario();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date d = (Date) df.parse(u.getFechaNacimiento());
+
         usuarioNuevo.seteMail(u.geteMail());
         usuarioNuevo.setNombreUsuario(u.getNombreUsuario());
         usuarioNuevo.setPassword(u.getPassword());
-        usuarioNuevo.setFechaNacimineto(DateFormat.getDateInstance().parse(u.getFechaNacimiento()));
+        usuarioNuevo.setFechaNacimineto(d);
 
         usuarioDao.crea(usuarioNuevo);
     }

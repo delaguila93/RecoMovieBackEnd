@@ -16,7 +16,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository
@@ -73,9 +75,14 @@ public class UsuarioDAOImp implements UsuarioDAO {
     }
 
     public Usuario obtenerUsuarioNombre(String u){
-        return em.createQuery("SELECT u FROM Usuario u WHERE u.nombreUsuario = ?1",Usuario.class)
-                .setParameter(1,u)
-                .getSingleResult();
+        Query q = em.createQuery("SELECT u FROM Usuario u WHERE u.nombreUsuario = ?1",Usuario.class)
+                .setParameter(1,u);
+        try{
+            Usuario usuario =(Usuario)q.getSingleResult();
+            return usuario;
+        }catch (NoResultException e){
+            return null;
+        }
     }
 
     public void eliminarPeliculaVista( int idVisualizacion) {

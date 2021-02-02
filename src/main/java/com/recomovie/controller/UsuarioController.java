@@ -27,8 +27,8 @@ public class UsuarioController {
      * @param usuarioNuevo El usuario nuevo que se ha registrado
      * @return Mensaje de confirmacion de 
      */
-    @GetMapping("/crear")
-    public ResponseEntity crearUsuario(@RequestParam ("usuario") UsuarioDTO usuarioNuevo){
+    @PostMapping(value="/crear", consumes="application/json")
+    public ResponseEntity crearUsuario(@RequestBody UsuarioDTO usuarioNuevo){
         HttpStatus estado ;
         String mensaje = " ";
         try{
@@ -158,7 +158,7 @@ public class UsuarioController {
      * @return La respuesta indicando si existe el usuario pasado
      */
     @GetMapping("/comprobarUsuario/{usuario}")
-    public ResponseEntity comprobarUsuario(@PathVariable ("usuario") String usuario){
+    public ResponseEntity <String>comprobarUsuario(@PathVariable ("usuario") String usuario){
         String mensaje = "";
         HttpStatus estado ;
         try{
@@ -172,7 +172,7 @@ public class UsuarioController {
             mensaje = e.getMessage();
             estado = HttpStatus.INTERNAL_SERVER_ERROR;
         }
-        return new ResponseEntity(mensaje,estado);
+        return new ResponseEntity<>(mensaje,estado);
     }
 
     /**
