@@ -53,6 +53,23 @@ public class PeliculaService implements IPeliculaService {
 
     /* -- A partir de aqui son los metodos concretos del servicio de peliculas -- */
 
+    public List<PeliculaDTO> listadoPeliculasAleatorias(){
+        List<PeliculaDTO> listadoPeliculas = new ArrayList<>();
+        List<Pelicula> lista = new ArrayList<>(); // Listado donde se almacenan las peliculas que se van añadiendo para evitar añadir peliculas repetidas
+        int contadorPeliculas = 0;
+        int idPeliculaAleatoria = 0;
+        while(contadorPeliculas < 12 ){
+            idPeliculaAleatoria = (int) (Math.random()*(995-1+1) +1);
+            Pelicula p = peliculaDao.obtener(idPeliculaAleatoria);
+            if(!lista.contains(p)){
+                lista.add(p);
+                listadoPeliculas.add(p.toDTO());
+                contadorPeliculas ++ ;
+            }
+
+        }
+        return listadoPeliculas;
+    }
 
     /**
      *

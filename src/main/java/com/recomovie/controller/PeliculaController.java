@@ -210,4 +210,22 @@ public class PeliculaController {
         return new ResponseEntity(mensaje,estado);
     }
 
+    /**
+     *
+     * @return
+     */
+    @GetMapping(path = "/listadoInicio")
+    public ResponseEntity<PeliculaDTO> obtenerPeliculasAleatorias(){
+        HttpStatus estado = HttpStatus.OK;
+        String mensaje = "";
+        ObjectMapper obj = new ObjectMapper();
+        try{
+            mensaje = obj.writeValueAsString(servicioPelicula.listadoPeliculasAleatorias());
+        }catch (Exception e){
+            mensaje = e.getMessage();
+            estado = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(mensaje,estado);
+    }
+
 }

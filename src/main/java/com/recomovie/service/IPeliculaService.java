@@ -21,6 +21,8 @@ public interface IPeliculaService {
 
     public List<PeliculaDTO> listadoPeliculas();
 
+    public List<PeliculaDTO> listadoPeliculasAleatorias();
+
     public List<PeliculaDTO> buscarTitulo(String titulo);
 
     public List<PeliculaDTO> buscarGenero(String genero);
