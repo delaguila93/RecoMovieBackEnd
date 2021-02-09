@@ -61,7 +61,7 @@ public class PeliculaService implements IPeliculaService {
         while(contadorPeliculas < 12 ){
             idPeliculaAleatoria = (int) (Math.random()*(995-1+1) +1);
             Pelicula p = peliculaDao.obtener(idPeliculaAleatoria);
-            if(!lista.contains(p)){
+            if(!lista.contains(p) && p!= null){
                 lista.add(p);
                 listadoPeliculas.add(p.toDTO());
                 contadorPeliculas ++ ;
