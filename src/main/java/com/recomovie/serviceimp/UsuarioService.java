@@ -15,6 +15,7 @@ import com.recomovie.entity.Usuario;
 import com.recomovie.entity.Visualizacion;
 import com.recomovie.service.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
@@ -30,6 +31,9 @@ public class UsuarioService implements IUsuarioService {
     @Autowired
     private UsuarioDAO usuarioDao;
 
+    @Autowired
+    private PasswordEncoder encoder;
+
     public void crearUsuario(UsuarioDTO u) throws ParseException {
         Usuario usuarioNuevo = new Usuario();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -37,7 +41,7 @@ public class UsuarioService implements IUsuarioService {
 
         usuarioNuevo.seteMail(u.geteMail());
         usuarioNuevo.setNombreUsuario(u.getNombreUsuario());
-        usuarioNuevo.setPassword(u.getPassword());
+        usuarioNuevo.setPassword(encoder.encode(u.getPassword()));
         usuarioNuevo.setFechaNacimineto(d);
 
         usuarioDao.crea(usuarioNuevo);
@@ -56,6 +60,9 @@ public class UsuarioService implements IUsuarioService {
         if(usuarioDao.obtenerUsuarioNombre(u.getNombreUsuario()) != null){
             return false;
         }else{
+            String password = "";
+            password = encoder.encode(u.getPassword());
+            u.setPassword(password);
             usuarioDao.actualiza(u);
             return true;
         }
@@ -95,5 +102,4 @@ public class UsuarioService implements IUsuarioService {
     public UsuarioDTO verUsuarioNombre(String nombreUsuario){
         return usuarioDao.obtenerUsuarioNombre(nombreUsuario).toDTO();
     }
-
 }
