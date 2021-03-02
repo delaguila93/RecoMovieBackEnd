@@ -28,6 +28,7 @@ public class Pelicula {
     private String director;
     private int year;
     private int duracion;
+    private String urlImage;
 
     @OneToMany(mappedBy = "pelicula")
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -43,9 +44,10 @@ public class Pelicula {
         this.year = -999999;
         this.duracion = -9999999;
         this.visualizaciones = new ArrayList<>();
+        this.urlImage = "";
     }
 
-    public Pelicula(int idPelicula, String titulo, String genero, String sinopsis, String director, int year, int duracion) {
+    public Pelicula(int idPelicula, String titulo, String genero, String sinopsis, String director, int year, int duracion,String urlImage) {
         this.idPelicula = idPelicula;
         this.titulo = titulo;
         this.genero = genero;
@@ -54,6 +56,7 @@ public class Pelicula {
         this.year = year;
         this.duracion = duracion;
         this.visualizaciones = new ArrayList<>();
+        this.urlImage = urlImage;
     }
 
     public int getIdPelicula() {
@@ -120,6 +123,14 @@ public class Pelicula {
         this.visualizaciones = visualizaciones;
     }
 
+    public String getUrlImage() {
+        return urlImage;
+    }
+
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
+    }
+
     public void anadirVisualizacion(Visualizacion v){
         this.visualizaciones.add(v);
     }
@@ -156,11 +167,11 @@ public class Pelicula {
     }
 
     public static Pelicula fromDTO (PeliculaDTO p){
-        return new Pelicula(p.getIdPelicula(),p.getTitulo(),p.getGenero(),p.getSinopsis(),p.getDirector(),p.getYear(),p.getDuracion());
+        return new Pelicula(p.getIdPelicula(),p.getTitulo(),p.getGenero(),p.getSinopsis(),p.getDirector(),p.getYear(),p.getDuracion(),p.getUrlImage());
     }
 
     public PeliculaDTO toDTO(){
-        return new PeliculaDTO(this.idPelicula,this.titulo,this.genero,this.sinopsis,this.director,this.year,this.duracion,this.visualizaciones.size());
+        return new PeliculaDTO(this.idPelicula,this.titulo,this.genero,this.sinopsis,this.director,this.year,this.duracion,this.visualizaciones.size(),this.urlImage);
     }
 
     public List<Visualizacion> listadoComentarios(){

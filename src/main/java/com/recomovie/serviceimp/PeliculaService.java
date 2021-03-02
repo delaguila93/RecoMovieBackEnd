@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,8 +57,9 @@ public class PeliculaService implements IPeliculaService {
         List<Pelicula> lista = new ArrayList<>(); // Listado donde se almacenan las peliculas que se van añadiendo para evitar añadir peliculas repetidas
         int contadorPeliculas = 0;
         int idPeliculaAleatoria = 0;
+        int idUltimaPelicula = peliculaDao.ultimaPelicula();
         while(contadorPeliculas < 12 ){
-            idPeliculaAleatoria = (int) (Math.random()*(995-1+1) +1);
+            idPeliculaAleatoria = (int) (Math.random()*(idUltimaPelicula-1+1) +1);
             Pelicula p = peliculaDao.obtener(idPeliculaAleatoria);
             if(!lista.contains(p) && p!= null){
                 lista.add(p);

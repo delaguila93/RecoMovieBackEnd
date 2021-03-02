@@ -17,11 +17,12 @@ public class PeliculaDTO {
     private int year;
     private int duracion;
     private int numVisualizaciones;
+    private String urlImage;
 
     public PeliculaDTO() {
     }
 
-    public PeliculaDTO(int idPelicula, String titulo, String genero, String sinopsis, String director, int year, int duracion, int numVisualizaciones) {
+    public PeliculaDTO(int idPelicula, String titulo, String genero, String sinopsis, String director, int year, int duracion, int numVisualizaciones, String urlImage) {
         this.idPelicula = idPelicula;
         this.titulo = titulo;
         this.genero = genero;
@@ -30,6 +31,7 @@ public class PeliculaDTO {
         this.year = year;
         this.duracion = duracion;
         this.numVisualizaciones = numVisualizaciones;
+        this.urlImage = urlImage;
     }
 
     public int getIdPelicula() {
@@ -94,6 +96,14 @@ public class PeliculaDTO {
 
     public void setNumVisualizaciones(int numVisualizaciones) {
         this.numVisualizaciones = numVisualizaciones;
+    }
+
+    public String getUrlImage() {
+        return urlImage;
+    }
+
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
     }
 
     @Override

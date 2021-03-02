@@ -7,6 +7,7 @@
 package com.recomovie.daoimp;
 
 import com.recomovie.dao.PeliculaDAO;
+import com.recomovie.dto.PeliculaDTO;
 import com.recomovie.entity.Pelicula;
 import com.recomovie.entity.Usuario;
 import com.recomovie.entity.Visualizacion;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.List;
@@ -34,6 +36,7 @@ public class PeliculaDAOImp implements PeliculaDAO {
         return em.find(Pelicula.class,idPelicula);
     }
 
+    @Transactional
     public void actualiza(Pelicula p){
         Pelicula peli = em.find(Pelicula.class,p.getIdPelicula());
         peli.setDirector(p.getDirector());
@@ -42,6 +45,7 @@ public class PeliculaDAOImp implements PeliculaDAO {
         peli.setTitulo(p.getTitulo());
         peli.setDuracion(p.getDuracion());
         peli.setYear(p.getYear());
+        peli.setUrlImage(p.getUrlImage());
         em.merge(peli);
     }
 
@@ -147,6 +151,11 @@ public class PeliculaDAOImp implements PeliculaDAO {
         visualizacion.setFechaComentario(v.getFechaComentario());
         visualizacion.setComentario(v.getComentario());
         em.merge(visualizacion);
+    }
+
+    public int ultimaPelicula(){
+        Query q = em.createQuery("SELECT MAX(p.idPelicula) FROM Pelicula p ",Integer.class);
+        return (Integer) q.getSingleResult();
     }
 
 }
