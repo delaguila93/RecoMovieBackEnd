@@ -145,6 +145,7 @@ public class Pelicula {
                 ", director='" + director + '\'' +
                 ", year=" + year +
                 ", duracion=" + duracion +
+                ", urlImage='" + urlImage + '\'' +
                 ", visualizaciones=" + visualizaciones +
                 '}';
     }

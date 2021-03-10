@@ -117,6 +117,7 @@ public class PeliculaDTO {
                 ", year=" + year +
                 ", duracion=" + duracion +
                 ", numVisualizaciones=" + numVisualizaciones +
+                ", urlImage='" + urlImage + '\'' +
                 '}';
     }
 }
