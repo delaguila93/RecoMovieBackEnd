@@ -1,7 +1,5 @@
 /**
- *
  * @author Jose Maria del Aguila Lopez
- *
  */
 
 package com.recomovie.serviceimp;
@@ -15,6 +13,8 @@ import com.recomovie.service.IPeliculaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,24 +27,24 @@ public class PeliculaService implements IPeliculaService {
     private PeliculaDAO peliculaDao;
 
 
-    public PeliculaDTO obtenerPelicula(int idPelicula){
+    public PeliculaDTO obtenerPelicula(int idPelicula) {
         return peliculaDao.obtener(idPelicula).toDTO();
     }
 
 
-    public List<PeliculaDTO> listadoPeliculas(){
+    public List<PeliculaDTO> listadoPeliculas() {
         List<PeliculaDTO> listadoPeliculas = new ArrayList<>();
         List<Pelicula> lista = peliculaDao.obtenerTodos();
-        for(Pelicula p: lista){
+        for (Pelicula p : lista) {
             listadoPeliculas.add(p.toDTO());
         }
         return listadoPeliculas;
     }
 
-    public List<PeliculaDTO> buscarTitulo(String titulo){
+    public List<PeliculaDTO> buscarTitulo(String titulo) {
         List<PeliculaDTO> listadoPeliculas = new ArrayList<>();
         List<Pelicula> lista = peliculaDao.buscarTitulo(titulo);
-        for(Pelicula p: lista){
+        for (Pelicula p : lista) {
             listadoPeliculas.add(p.toDTO());
         }
         return listadoPeliculas;
@@ -52,19 +52,19 @@ public class PeliculaService implements IPeliculaService {
 
     /* -- A partir de aqui son los metodos concretos del servicio de peliculas -- */
 
-    public List<PeliculaDTO> listadoPeliculasAleatorias(){
+    public List<PeliculaDTO> listadoPeliculasAleatorias() {
         List<PeliculaDTO> listadoPeliculas = new ArrayList<>();
         List<Pelicula> lista = new ArrayList<>(); // Listado donde se almacenan las peliculas que se van añadiendo para evitar añadir peliculas repetidas
         int contadorPeliculas = 0;
         int idPeliculaAleatoria = 0;
         int idUltimaPelicula = peliculaDao.ultimaPelicula();
-        while(contadorPeliculas < 12 ){
-            idPeliculaAleatoria = (int) (Math.random()*(idUltimaPelicula-1+1) +1);
+        while (contadorPeliculas < 12) {
+            idPeliculaAleatoria = (int) (Math.random() * (idUltimaPelicula - 1 + 1) + 1);
             Pelicula p = peliculaDao.obtener(idPeliculaAleatoria);
-            if(!lista.contains(p) && p!= null){
+            if (!lista.contains(p) && p != null) {
                 lista.add(p);
                 listadoPeliculas.add(p.toDTO());
-                contadorPeliculas ++ ;
+                contadorPeliculas++;
             }
 
         }
@@ -77,16 +77,16 @@ public class PeliculaService implements IPeliculaService {
      * @return
      */
 
-    public List<VisualizacionDTO> obtenerComentariosPelicula(int idPelicula){
+    public List<VisualizacionDTO> obtenerComentariosPelicula(int idPelicula) {
         List<Visualizacion> listado = new ArrayList<>();
         List<VisualizacionDTO> listadoPeliculas = new ArrayList<>();
-        try{
+        try {
             listado = peliculaDao.getComentariosPelicula(idPelicula);
-            for(Visualizacion v : listado){
+            for (Visualizacion v : listado) {
                 listadoPeliculas.add(v.toDTO());
             }
-        }catch (Exception e){
-            return  null;
+        } catch (Exception e) {
+            return null;
         }
         return listadoPeliculas;
     }
@@ -96,16 +96,16 @@ public class PeliculaService implements IPeliculaService {
      * @param genero
      * @return Listado de peliculas por genero
      */
-    public List<PeliculaDTO> buscarGenero(String genero){
+    public List<PeliculaDTO> buscarGenero(String genero) {
         List<PeliculaDTO> listadoPeliculas = new ArrayList<>();
         List<Pelicula> pelis = new ArrayList<>();
         String[] generos = genero.split(",");
-        for(String g : generos){
+        for (String g : generos) {
             List<Pelicula> lista = peliculaDao.buscarGenero(genero);
             pelis.addAll(lista.stream().distinct().collect(Collectors.toList()));
         }
 
-        for(Pelicula p: pelis){
+        for (Pelicula p : pelis) {
             listadoPeliculas.add(p.toDTO());
         }
         return listadoPeliculas;
@@ -116,29 +116,29 @@ public class PeliculaService implements IPeliculaService {
      * @param year
      * @return
      */
-    public List<PeliculaDTO> buscarYear(int year){
+    public List<PeliculaDTO> buscarYear(int year) {
         List<PeliculaDTO> listadoPeliculas = new ArrayList<>();
         List<Pelicula> lista = peliculaDao.buscarYear(year);
-        for(Pelicula p: lista){
+        for (Pelicula p : lista) {
             listadoPeliculas.add(p.toDTO());
         }
         return listadoPeliculas;
     }
 
-    public void anadirValoracion(VisualizacionDTO v){
-        if(peliculaDao.obtenerVisualizacion(v.getIdPelicula(),v.getIdUsuario()) == null){
-            peliculaDao.crearVisualizacion(v.getIdPelicula(),v.getIdUsuario());
+    public void anadirValoracion(VisualizacionDTO v) {
+        if (peliculaDao.obtenerVisualizacion(v.getIdPelicula(), v.getIdUsuario()) == null) {
+            peliculaDao.crearVisualizacion(v.getIdPelicula(), v.getIdUsuario());
         }
-        peliculaDao.anadirValoracion(v.getIdPelicula(),v.getIdUsuario(),v.getValoracion());
+        peliculaDao.anadirValoracion(v.getIdPelicula(), v.getIdUsuario(), v.getValoracion());
 
     }
 
 
     public void anadirComentario(VisualizacionDTO v) throws ParseException {
-        if(peliculaDao.obtenerVisualizacion(v.getIdPelicula(),v.getIdUsuario()) == null){
-            peliculaDao.crearVisualizacion(v.getIdPelicula(),v.getIdUsuario());
+        if (peliculaDao.obtenerVisualizacion(v.getIdPelicula(), v.getIdUsuario()) == null) {
+            peliculaDao.crearVisualizacion(v.getIdPelicula(), v.getIdUsuario());
         }
-        peliculaDao.anadirComentario(v.getIdPelicula(), v.getIdUsuario(),v.getFechaComentario(),v.getComentario());
+        peliculaDao.anadirComentario(v.getIdPelicula(), v.getIdUsuario(), v.getFechaComentario(), v.getComentario());
     }
 
     public void editarComentario(VisualizacionDTO v) throws ParseException {
