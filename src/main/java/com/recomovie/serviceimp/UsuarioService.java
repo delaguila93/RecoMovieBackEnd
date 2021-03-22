@@ -6,6 +6,7 @@
 
 package com.recomovie.serviceimp;
 
+import com.recomovie.dao.PeliculaDAO;
 import com.recomovie.dao.UsuarioDAO;
 import com.recomovie.dto.PeliculaDTO;
 import com.recomovie.dto.UsuarioDTO;
@@ -30,6 +31,9 @@ public class UsuarioService implements IUsuarioService {
 
     @Autowired
     private UsuarioDAO usuarioDao;
+
+    @Autowired
+    private PeliculaDAO peliculaDAO;
 
     @Autowired
     private PasswordEncoder encoder;
@@ -69,7 +73,9 @@ public class UsuarioService implements IUsuarioService {
 
     }
 
-    public List<VisualizacionDTO> obtenerPeliculasVistas(int idUsuario){
+    public List<VisualizacionDTO> obtenerPeliculasVistas(String nombreUsuario){
+        Usuario u = usuarioDao.obtenerUsuarioNombre(nombreUsuario);
+        int idUsuario = u.getIdUsuario();
         List<Visualizacion> peliculas = usuarioDao.peliculasVistas(idUsuario);
         List<VisualizacionDTO> peliculasVistas = new ArrayList<>();
         for(Visualizacion v : peliculas){
@@ -90,11 +96,13 @@ public class UsuarioService implements IUsuarioService {
         usuarioDao.eliminarPeliculaVista(idVisualizacion);
     }
 
-    public List<PeliculaDTO> obtenerPeliculas(int idUsuario){
-        List<Pelicula> peliculasVisualizadas = usuarioDao.obtenerPeliculasVisualizadas(idUsuario);
+    public List<PeliculaDTO> obtenerPeliculas(String nombreUsuario){
+        Usuario u = usuarioDao.obtenerUsuarioNombre(nombreUsuario);
+        int idUsuario = u.getIdUsuario();
+        List<Visualizacion> peliculasVisualizadas = usuarioDao.peliculasVistas(idUsuario);
         List<PeliculaDTO> peliculaDTOS = new ArrayList<>();
-        for(Pelicula p : peliculasVisualizadas){
-            peliculaDTOS.add(p.toDTO());
+        for(Visualizacion v:peliculasVisualizadas){
+            peliculaDTOS.add(peliculaDAO.obtener(v.getPelicula().getIdPelicula()).toDTO());
         }
         return peliculaDTOS;
     }

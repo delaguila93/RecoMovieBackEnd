@@ -29,5 +29,4 @@ public interface UsuarioDAO extends BaseDAO<Usuario,Integer> {
 
     public void eliminarPeliculaVista( int idVisualizacion);
 
-    public List<Pelicula> obtenerPeliculasVisualizadas(int idUsuario);
 }

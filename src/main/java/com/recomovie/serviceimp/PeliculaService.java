@@ -13,8 +13,6 @@ import com.recomovie.service.IPeliculaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.FileWriter;
-import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +70,6 @@ public class PeliculaService implements IPeliculaService {
     }
 
     /**
-     *
      * @param idPelicula
      * @return
      */
@@ -93,6 +90,7 @@ public class PeliculaService implements IPeliculaService {
 
     /**
      * Funcion que busca las obtiene las peliculas segun el genero o generos dado
+     *
      * @param genero
      * @return Listado de peliculas por genero
      */
@@ -112,7 +110,6 @@ public class PeliculaService implements IPeliculaService {
     }
 
     /**
-     *
      * @param year
      * @return
      */

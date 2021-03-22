@@ -94,9 +94,4 @@ public class UsuarioDAOImp implements UsuarioDAO {
         em.remove(em.merge(idVisualizacion));
     }
 
-    public List<Pelicula> obtenerPeliculasVisualizadas(int idUsuario){
-        return em.createQuery("SELECT p FROM Pelicula p, Visualizacion v WHERE p.idPelicula = v.idPelicula AND v.idUsuario = ?1",Pelicula.class)
-                .setParameter(1,idUsuario)
-                .getResultList();
-    }
 }

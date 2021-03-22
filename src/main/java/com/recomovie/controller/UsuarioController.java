@@ -111,16 +111,17 @@ public class UsuarioController {
 
     /**
      * Funcion que devuelve las peliculas que ha visto el usuario
-     * @param idUsuario El usuario a buscar para devolver las peliculas vistas
+     * @param nombreUsuario El usuario a buscar para devolver las peliculas vistas
      * @return Las peliculas vistas por el usuario dado
      */
-    @GetMapping("/peliculasVistas/{idUsuario}")
-    public ResponseEntity obtenerPeliculasVistas(@PathVariable ("idUsuario") Integer idUsuario){
+    @GetMapping("/peliculasVistas/{nombreUsuario}")
+    public ResponseEntity obtenerPeliculasVistas(@PathVariable ("nombreUsuario") String nombreUsuario){
         String mensaje = "";
         HttpStatus estado = HttpStatus.OK;
         ObjectMapper obj = new ObjectMapper();
         try{
-            mensaje = obj.writeValueAsString(servicioUsuario.obtenerPeliculasVistas(idUsuario));
+            mensaje = obj.writeValueAsString(servicioUsuario.obtenerPeliculas(nombreUsuario));
+
 
         }catch(Exception e){
             mensaje = e.getMessage();
@@ -216,16 +217,16 @@ public class UsuarioController {
 
     /**
      * Funcion que devuelve los datos de las peliculas que el usuario ha visto
-     * @param idUsuario Identificador de Usuario 
+     * @param nombreUsuario Nombre de Usuario
      * @return
      */
-    @GetMapping("/obtenerDatosPeliculas/{idUsuario}")
-    public ResponseEntity obtenerDatosPeliculas(@PathVariable ("idUsuario") Integer idUsuario){
+    @GetMapping("/obtenerDatosPeliculas/{nombreUsuario}")
+    public ResponseEntity obtenerDatosPeliculas(@PathVariable ("nombreUsuario") String nombreUsuario){
         String mensaje = "";
         HttpStatus estado = HttpStatus.OK;
         ObjectMapper obj = new ObjectMapper();
         try{
-            mensaje = obj.writeValueAsString(servicioUsuario.obtenerPeliculas(idUsuario));
+            mensaje = obj.writeValueAsString(servicioUsuario.obtenerPeliculas(nombreUsuario));
         }catch (Exception e){
             mensaje = e.getMessage();
             estado = HttpStatus.INTERNAL_SERVER_ERROR;
