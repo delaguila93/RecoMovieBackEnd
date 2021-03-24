@@ -9,6 +9,7 @@ package com.recomovie.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.recomovie.dto.PeliculaDTO;
+import com.recomovie.dto.UsuarioDTO;
 import com.recomovie.dto.VisualizacionDTO;
 import com.recomovie.service.IPeliculaService;
 
@@ -221,6 +222,20 @@ public class PeliculaController {
         ObjectMapper obj = new ObjectMapper();
         try{
             mensaje = obj.writeValueAsString(servicioPelicula.listadoPeliculasAleatorias());
+        }catch (Exception e){
+            mensaje = e.getMessage();
+            estado = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(mensaje,estado);
+    }
+
+    @GetMapping(path = "/listadoUsuarios/{idPelicula}")
+    public ResponseEntity<String> obtenerListadoUsuarios(@PathVariable ("idPelicula") Integer idPelicula){
+        HttpStatus estado = HttpStatus.OK;
+        String mensaje = "";
+        ObjectMapper obj = new ObjectMapper();
+        try{
+            mensaje = obj.writeValueAsString(servicioPelicula.listaUsuariosPelicula(idPelicula));
         }catch (Exception e){
             mensaje = e.getMessage();
             estado = HttpStatus.INTERNAL_SERVER_ERROR;

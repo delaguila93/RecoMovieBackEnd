@@ -5,7 +5,9 @@
 package com.recomovie.serviceimp;
 
 import com.recomovie.dao.PeliculaDAO;
+import com.recomovie.dao.UsuarioDAO;
 import com.recomovie.dto.PeliculaDTO;
+import com.recomovie.dto.UsuarioDTO;
 import com.recomovie.dto.VisualizacionDTO;
 import com.recomovie.entity.Pelicula;
 import com.recomovie.entity.Visualizacion;
@@ -23,6 +25,9 @@ public class PeliculaService implements IPeliculaService {
 
     @Autowired
     private PeliculaDAO peliculaDao;
+
+    @Autowired
+    private UsuarioDAO usuarioDao;
 
 
     public PeliculaDTO obtenerPelicula(int idPelicula) {
@@ -146,5 +151,17 @@ public class PeliculaService implements IPeliculaService {
         peliculaDao.editarValoracion(Visualizacion.fromDTO(v));
     }
 
-
+    public List<String> listaUsuariosPelicula(int idPelicula) {
+        List<Visualizacion> listado = new ArrayList<>();
+        List<String> listadoUsuarios = new ArrayList<>();
+        try {
+            listado = peliculaDao.getComentariosPelicula(idPelicula);
+            for (Visualizacion v : listado) {
+                listadoUsuarios.add(v.getUsuario().getNombreUsuario());
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        return listadoUsuarios;
+    }
 }

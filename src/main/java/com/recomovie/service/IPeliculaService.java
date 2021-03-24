@@ -7,6 +7,7 @@
 package com.recomovie.service;
 
 import com.recomovie.dto.PeliculaDTO;
+import com.recomovie.dto.UsuarioDTO;
 import com.recomovie.dto.VisualizacionDTO;
 
 import java.text.ParseException;
@@ -36,4 +37,6 @@ public interface IPeliculaService {
     public void editarComentario(VisualizacionDTO v) throws ParseException;
 
     public void editarValoracion(VisualizacionDTO v) throws ParseException;
+
+    public List<String> listaUsuariosPelicula(int idPelicula);
 }
