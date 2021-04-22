@@ -158,4 +158,11 @@ public class PeliculaDAOImp implements PeliculaDAO {
         return (Integer) q.getSingleResult();
     }
 
+    public int minYear(){
+        return em.createQuery("SELECT MIN(p.year) FROM Pelicula p",Integer.class).getSingleResult();
+    }
+
+    public int maxYear(){
+        return em.createQuery("SELECT MAX(p.year) FROM Pelicula p",Integer.class).getSingleResult();
+    }
 }

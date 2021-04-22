@@ -52,4 +52,8 @@ public interface PeliculaDAO extends BaseDAO<Pelicula,Integer> {
     public void editarComentario(Visualizacion v);
 
     public int ultimaPelicula();
+
+    public int minYear();
+
+    public int maxYear();
 }
