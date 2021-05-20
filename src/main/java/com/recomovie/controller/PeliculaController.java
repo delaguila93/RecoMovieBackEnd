@@ -78,7 +78,7 @@ public class PeliculaController {
      * @return La lista de las peliculas cuyo año coincidan con el año dado
      */
     @GetMapping("/buscar-year/{year}")
-    public ResponseEntity<PeliculaDTO> buscarYear(@PathVariable ("year") Integer year){
+    public ResponseEntity<PeliculaDTO> buscarYear(@PathVariable ("year") String year){
         HttpStatus estado = HttpStatus.OK;
         String mensaje = "";
         ObjectMapper obj = new ObjectMapper();
@@ -96,8 +96,8 @@ public class PeliculaController {
      * @param generos
      * @return
      */
-    @GetMapping("buscar-genero")
-    public ResponseEntity<PeliculaDTO> buscarGenero(@RequestBody String generos){
+    @GetMapping("/buscar-genero")
+    public ResponseEntity<PeliculaDTO> buscarGenero(@RequestParam("generos") String generos){
         String mensaje = "";
         HttpStatus estado = HttpStatus.OK;
         ObjectMapper obj = new ObjectMapper();
@@ -236,6 +236,19 @@ public class PeliculaController {
         ObjectMapper obj = new ObjectMapper();
         try{
             mensaje = obj.writeValueAsString(servicioPelicula.listaUsuariosPelicula(idPelicula));
+        }catch (Exception e){
+            mensaje = e.getMessage();
+            estado = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(mensaje,estado);
+    }
+
+    @GetMapping(path = "/obtenerMinMaxYear")
+    public ResponseEntity<String> obtenerMinMaxYear(){
+        HttpStatus estado = HttpStatus.OK;
+        String mensaje = "";
+        try{
+            mensaje = servicioPelicula.minMaxYear() ;
         }catch (Exception e){
             mensaje = e.getMessage();
             estado = HttpStatus.INTERNAL_SERVER_ERROR;

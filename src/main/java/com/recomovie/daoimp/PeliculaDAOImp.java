@@ -89,9 +89,10 @@ public class PeliculaDAOImp implements PeliculaDAO {
     }
 
     @Cacheable (value = "peliculasYear")
-    public List<Pelicula> buscarYear (int year){
-        return em.createQuery("SELECT p FROM pelicula WHERE p.year = ?1",Pelicula.class)
-                .setParameter(1,year)
+    public List<Pelicula> buscarYear (int minYear, int maxYear){
+        return em.createQuery("SELECT p FROM Pelicula p WHERE p.year BETWEEN ?1 AND ?2",Pelicula.class)
+                .setParameter(1,minYear)
+                .setParameter(2,maxYear)
                 .getResultList();
     }
 

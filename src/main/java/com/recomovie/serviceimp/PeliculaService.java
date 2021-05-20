@@ -102,9 +102,15 @@ public class PeliculaService implements IPeliculaService {
     public List<PeliculaDTO> buscarGenero(String genero) {
         List<PeliculaDTO> listadoPeliculas = new ArrayList<>();
         List<Pelicula> pelis = new ArrayList<>();
-        String[] generos = genero.split(",");
+        String genre = genero.substring(1,genero.length()-2);
+        String[] generos = genre.split(",");
+        for (int i = 0; i< generos.length ; ++i){
+            if(generos[i].charAt(0) != generos[i].charAt(1) ){
+                generos[i]=generos[i].substring(1,generos[i].length()-1);
+            }
+        }
         for (String g : generos) {
-            List<Pelicula> lista = peliculaDao.buscarGenero(genero);
+            List<Pelicula> lista = peliculaDao.buscarGenero(g);
             pelis.addAll(lista.stream().distinct().collect(Collectors.toList()));
         }
 
@@ -118,9 +124,13 @@ public class PeliculaService implements IPeliculaService {
      * @param year
      * @return
      */
-    public List<PeliculaDTO> buscarYear(int year) {
+    public List<PeliculaDTO> buscarYear(String year) {
+        String[] years = year.split(" ");
+        int minYear = Integer.parseInt(years[0].substring(1,years[0].length()));
+        int maxYear = Integer.parseInt(years[1].substring(0,years[1].length()-1));
+
         List<PeliculaDTO> listadoPeliculas = new ArrayList<>();
-        List<Pelicula> lista = peliculaDao.buscarYear(year);
+        List<Pelicula> lista = peliculaDao.buscarYear(minYear,maxYear);
         for (Pelicula p : lista) {
             listadoPeliculas.add(p.toDTO());
         }
@@ -163,5 +173,11 @@ public class PeliculaService implements IPeliculaService {
             return null;
         }
         return listadoUsuarios;
+    }
+
+    public String minMaxYear(){
+        String min = String.valueOf( peliculaDao.minYear());
+        String max = String.valueOf( peliculaDao.maxYear());
+        return min +" "+ max;
     }
 }

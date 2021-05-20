@@ -28,7 +28,7 @@ public interface IPeliculaService {
 
     public List<PeliculaDTO> buscarGenero(String genero);
 
-    public List<PeliculaDTO> buscarYear(int year);
+    public List<PeliculaDTO> buscarYear(String year);
 
     public void anadirValoracion(VisualizacionDTO v);
 
@@ -39,4 +39,6 @@ public interface IPeliculaService {
     public void editarValoracion(VisualizacionDTO v) throws ParseException;
 
     public List<String> listaUsuariosPelicula(int idPelicula);
+
+    public String minMaxYear();
 }

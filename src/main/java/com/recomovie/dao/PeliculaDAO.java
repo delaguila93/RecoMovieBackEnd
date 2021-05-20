@@ -35,7 +35,7 @@ public interface PeliculaDAO extends BaseDAO<Pelicula,Integer> {
     public List<Pelicula> buscarGenero (String genero);
 
     @Cacheable (value = "peliculasYear")
-    public List<Pelicula> buscarYear (int year);
+    public List<Pelicula> buscarYear (int minYear, int maxYear);
 
     @Transactional
     public void crearVisualizacion(int idPelicula, int idUsuario);
