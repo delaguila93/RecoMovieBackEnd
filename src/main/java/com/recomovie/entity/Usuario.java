@@ -7,12 +7,14 @@
 package com.recomovie.entity;
 
 import com.recomovie.dto.UsuarioDTO;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Entity
@@ -33,7 +35,7 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Visualizacion> peliculasVistas;
+    private Set<Visualizacion> peliculasVistas;
 
     /**
      * Contructor por defecto de Usuario
@@ -58,7 +60,7 @@ public class Usuario {
         this.password = password;
         this.eMail = eMail;
         this.fechaNacimineto = fechaNacimineto;
-        this.peliculasVistas = new ArrayList<>();
+        this.peliculasVistas = new TreeSet<>();
     }
 
     /* -- Metodos Get y Set de los atributos de Usuario -- */
@@ -102,11 +104,11 @@ public class Usuario {
         this.fechaNacimineto = fechaNacimineto;
     }
 
-    public List<Visualizacion> getPeliculasVistas() {
+    public Set<Visualizacion> getPeliculasVistas() {
         return peliculasVistas;
     }
 
-    public void setPeliculasVistas(List<Visualizacion> peliculasVistas) {
+    public void setPeliculasVistas(Set<Visualizacion> peliculasVistas) {
         this.peliculasVistas = peliculasVistas;
     }
 
@@ -121,7 +123,10 @@ public class Usuario {
      * @throws ParseException
      */
     public static Usuario fromDTO(UsuarioDTO u) throws ParseException {
-        return new Usuario(u.getNombreUsuario(),u.getPassword(),u.geteMail(), DateFormat.getDateInstance().parse(u.getFechaNacimiento()));
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date d = df.parse(u.getFechaNacimiento());
+        return new Usuario(u.getNombreUsuario(),u.getPassword(),u.geteMail(), d);
     }
 
     /**

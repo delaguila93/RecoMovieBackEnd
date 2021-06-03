@@ -32,7 +32,7 @@ public class Pelicula {
 
     @OneToMany(mappedBy = "pelicula")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Visualizacion> visualizaciones;
+    private Set<Visualizacion> visualizaciones;
 
 
     public Pelicula(){
@@ -43,7 +43,7 @@ public class Pelicula {
         this.director = "";
         this.year = -999999;
         this.duracion = -9999999;
-        this.visualizaciones = new ArrayList<>();
+        this.visualizaciones = new TreeSet<>();
         this.urlImage = "";
     }
 
@@ -55,7 +55,7 @@ public class Pelicula {
         this.director = director;
         this.year = year;
         this.duracion = duracion;
-        this.visualizaciones = new ArrayList<>();
+        this.visualizaciones = new TreeSet<>();
         this.urlImage = urlImage;
     }
 
@@ -115,11 +115,11 @@ public class Pelicula {
         this.duracion = duracion;
     }
 
-    public List<Visualizacion> getVisualizaciones() {
+    public Set<Visualizacion> getVisualizaciones() {
         return visualizaciones;
     }
 
-    public void setVisualizaciones(List<Visualizacion> visualizaciones) {
+    public void setVisualizaciones(Set<Visualizacion> visualizaciones) {
         this.visualizaciones = visualizaciones;
     }
 
@@ -186,9 +186,9 @@ public class Pelicula {
     }
 
 
-    public boolean existeVisualizacion(Visualizacion visualizacion){
+    public boolean existeVisualizacion(int idPelicula, int idUsuario){
         for(Visualizacion v : this.visualizaciones){
-            if((v.getUsuario().equals(visualizacion.getUsuario()) ) && v.getPelicula().equals(this)){
+            if((v.getUsuario().getIdUsuario() == idUsuario) && (v.getPelicula().getIdPelicula() == idPelicula)){
                 return true;
             }
         }

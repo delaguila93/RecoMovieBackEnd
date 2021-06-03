@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.text.DateFormat;
@@ -98,9 +99,11 @@ public class PeliculaDAOImp implements PeliculaDAO {
 
     @Transactional
     public void crearVisualizacion(int idPelicula, int idUsuario){
+        Visualizacion visualizacion = new Visualizacion();
         Pelicula p = em.find(Pelicula.class,idPelicula);
         Usuario u = em.find(Usuario.class,idUsuario);
-        Visualizacion visualizacion = new Visualizacion(u,p);
+        visualizacion.setPelicula(p);
+        visualizacion.setUsuario(u);
         p.anadirVisualizacion(visualizacion);
         u.anadirPeliculaVista(visualizacion);
         em.merge(p);
@@ -120,17 +123,16 @@ public class PeliculaDAOImp implements PeliculaDAO {
     }
 
     @Transactional
-    public void anadirValoracion(int idPelicula,int idUsuario, float valoracion){
-        Visualizacion v = em.createQuery("SELECT v FROM Visualizacion v WHERE v.idPelicula= ?1 AND v.idUsuario = ?2",Visualizacion.class)
-                .setParameter(1,idPelicula)
-                .setParameter(2,idUsuario)
+    public void anadirValoracion(int idVisualizacion, float valoracion){
+        Visualizacion v = em.createQuery("SELECT v FROM Visualizacion v WHERE v.idVisualizacion= ?1",Visualizacion.class)
+                .setParameter(1,idVisualizacion)
                 .getSingleResult();
         v.setValoracion(valoracion);
         em.merge(v);
     }
 
     public Visualizacion obtenerVisualizacion(int idPelicula,int idUsuario){
-        return em.createQuery("SELECT v FROM Visualizacion v WHERE v.idPelicula= ?1 AND v.idUsuario = ?2",Visualizacion.class)
+        return em.createQuery("SELECT v FROM Visualizacion v WHERE v.pelicula= ?1 AND v.usuario = ?2",Visualizacion.class)
                 .setParameter(1,idPelicula)
                 .setParameter(2,idUsuario)
                 .getSingleResult();

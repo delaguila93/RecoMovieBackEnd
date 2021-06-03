@@ -30,7 +30,7 @@ public interface IPeliculaService {
 
     public List<PeliculaDTO> buscarYear(String year);
 
-    public void anadirValoracion(VisualizacionDTO v);
+    public void anadirValoracion(VisualizacionDTO v) throws ParseException;
 
     public void anadirComentario(VisualizacionDTO v) throws ParseException;
 

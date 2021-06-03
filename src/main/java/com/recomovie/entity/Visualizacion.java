@@ -7,9 +7,13 @@
 package com.recomovie.entity;
 
 import com.recomovie.dto.VisualizacionDTO;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -22,11 +26,13 @@ public class Visualizacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idVisualizacion;
 
-    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "idPelicula")
     private Pelicula pelicula;
 
-    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "idUsuario")
     private Usuario usuario;
 
@@ -39,7 +45,6 @@ public class Visualizacion {
     private String comentario;
 
     public Visualizacion(){
-        this.idVisualizacion = -99999;
         this.pelicula = null;
         this.usuario = null;
         this.valoracion = -999;
@@ -51,9 +56,12 @@ public class Visualizacion {
     public Visualizacion (Usuario u,Pelicula p){
         this.pelicula = p;
         this.usuario = u;
+        this.valoracion = -999;
+        this.fechaComentario = null;
+        this.comentario = "";
     }
 
-    public Visualizacion(int idVisualizacion,float valoracion,Date fechaComentario,String comentario) {
+    public Visualizacion(float valoracion,Date fechaComentario,String comentario) {
         this.pelicula = new Pelicula();
         this.usuario = new Usuario();
         this.valoracion = valoracion;
@@ -111,7 +119,12 @@ public class Visualizacion {
 
 
     public static Visualizacion fromDTO(VisualizacionDTO v) throws ParseException {
-        return new Visualizacion(v.getIdVisualizacion(),v.getValoracion(),DateFormat.getDateInstance().parse(v.getFechaComentario()),v.getComentario());
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        if(v.getFechaComentario() == null){
+            v.setFechaComentario("2000-01-01");
+        }
+        Date f = df.parse(v.getFechaComentario());
+        return new Visualizacion(v.getValoracion(),f,v.getComentario());
     }
 
     public VisualizacionDTO toDTO(){

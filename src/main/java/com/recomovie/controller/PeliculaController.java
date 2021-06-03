@@ -158,8 +158,8 @@ public class PeliculaController {
      * @param v La Valoracion de la pelicula a añadir
      * @return Mensaje de confirmacion de que la valoracion ha sido añadida
      */
-    @GetMapping("/anadir-valoracion/{idPelicula}")
-    public ResponseEntity<String> anadirValoracion(@PathVariable ("idPelicula") Integer idPelicula, @RequestBody VisualizacionDTO v){
+    @PostMapping("/anadir-valoracion")
+    public ResponseEntity<String> anadirValoracion( @RequestBody VisualizacionDTO v){
         HttpStatus estado = HttpStatus.OK;
         String mensaje = "";
         try{

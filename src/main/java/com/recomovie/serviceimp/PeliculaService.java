@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,7 +28,7 @@ public class PeliculaService implements IPeliculaService {
     private PeliculaDAO peliculaDao;
 
     @Autowired
-    private UsuarioDAO usuarioDao;
+    private UsuarioService usuarioDao;
 
 
     public PeliculaDTO obtenerPelicula(int idPelicula) {
@@ -137,12 +138,30 @@ public class PeliculaService implements IPeliculaService {
         return listadoPeliculas;
     }
 
-    public void anadirValoracion(VisualizacionDTO v) {
-        if (peliculaDao.obtenerVisualizacion(v.getIdPelicula(), v.getIdUsuario()) == null) {
+    public void anadirValoracion(VisualizacionDTO v) throws ParseException {
+        Pelicula p = peliculaDao.obtener(v.getIdPelicula());
+        Visualizacion obtenido = new Visualizacion();
+        int idBuscado = 0;
+        if(p.existeVisualizacion(v.getIdPelicula(), v.getIdUsuario())){
+            Set<Visualizacion> listado = p.getVisualizaciones();
+            for (Visualizacion visualizacion: listado){
+                if((v.getIdUsuario() == visualizacion.getUsuario().getIdUsuario()) && (v.getIdPelicula() == visualizacion.getPelicula().getIdPelicula())){
+                    idBuscado = visualizacion.getIdVisualizacion();
+                }
+            }
+            obtenido.setValoracion(v.getValoracion());
+            peliculaDao.anadirValoracion(idBuscado,v.getValoracion());
+        }else{
             peliculaDao.crearVisualizacion(v.getIdPelicula(), v.getIdUsuario());
+            Set<Visualizacion> listado = p.getVisualizaciones();
+            for (Visualizacion visualizacion: listado){
+                if((v.getIdUsuario() == visualizacion.getUsuario().getIdUsuario()) && (v.getIdPelicula() == visualizacion.getPelicula().getIdPelicula())){
+                    idBuscado = visualizacion.getIdVisualizacion();
+                }
+            }
+            obtenido.setValoracion(v.getValoracion());
+            peliculaDao.anadirValoracion(idBuscado,v.getValoracion());
         }
-        peliculaDao.anadirValoracion(v.getIdPelicula(), v.getIdUsuario(), v.getValoracion());
-
     }
 
 
@@ -158,7 +177,8 @@ public class PeliculaService implements IPeliculaService {
     }
 
     public void editarValoracion(VisualizacionDTO v) throws ParseException {
-        peliculaDao.editarValoracion(Visualizacion.fromDTO(v));
+        System.out.println(v.getIdPelicula());
+       // peliculaDao.editarValoracion(Visualizacion.fromDTO(v));
     }
 
     public List<String> listaUsuariosPelicula(int idPelicula) {

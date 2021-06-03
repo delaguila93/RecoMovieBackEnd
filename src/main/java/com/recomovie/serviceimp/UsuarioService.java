@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UsuarioService implements IUsuarioService {
@@ -76,7 +77,7 @@ public class UsuarioService implements IUsuarioService {
     public List<VisualizacionDTO> obtenerPeliculasVistas(String nombreUsuario){
         Usuario u = usuarioDao.obtenerUsuarioNombre(nombreUsuario);
         int idUsuario = u.getIdUsuario();
-        List<Visualizacion> peliculas = usuarioDao.peliculasVistas(idUsuario);
+        Set<Visualizacion> peliculas = usuarioDao.peliculasVistas(idUsuario);
         List<VisualizacionDTO> peliculasVistas = new ArrayList<>();
         for(Visualizacion v : peliculas){
             peliculasVistas.add(v.toDTO());
@@ -99,7 +100,7 @@ public class UsuarioService implements IUsuarioService {
     public List<PeliculaDTO> obtenerPeliculas(String nombreUsuario){
         Usuario u = usuarioDao.obtenerUsuarioNombre(nombreUsuario);
         int idUsuario = u.getIdUsuario();
-        List<Visualizacion> peliculasVisualizadas = usuarioDao.peliculasVistas(idUsuario);
+        Set<Visualizacion> peliculasVisualizadas = usuarioDao.peliculasVistas(idUsuario);
         List<PeliculaDTO> peliculaDTOS = new ArrayList<>();
         for(Visualizacion v:peliculasVisualizadas){
             peliculaDTOS.add(peliculaDAO.obtener(v.getPelicula().getIdPelicula()).toDTO());

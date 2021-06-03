@@ -20,6 +20,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class UsuarioDAOImp implements UsuarioDAO {
@@ -63,7 +64,7 @@ public class UsuarioDAOImp implements UsuarioDAO {
     /* -- Metodos propios del DAO de usuarios -- */
 
     @Cacheable(value = "peliculasVistas")
-    public List<Visualizacion> peliculasVistas(int idUsuario){
+    public Set<Visualizacion> peliculasVistas(int idUsuario){
         return em.find(Usuario.class,idUsuario).getPeliculasVistas();
     }
 
