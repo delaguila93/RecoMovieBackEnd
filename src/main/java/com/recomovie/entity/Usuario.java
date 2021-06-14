@@ -134,6 +134,14 @@ public class Usuario {
      * @return
      */
     public UsuarioDTO toDTO(){
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, 2000);
+        cal.set(Calendar.MONTH, Calendar.JANUARY);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+
+        if(this.getFechaNacimineto() == null){
+            this.setFechaNacimineto(cal.getTime());
+        }
         return new UsuarioDTO(this.idUsuario,this.nombreUsuario,this.password,this.eMail,this.fechaNacimineto.toString(),this.peliculasVistas.size());
     }
 

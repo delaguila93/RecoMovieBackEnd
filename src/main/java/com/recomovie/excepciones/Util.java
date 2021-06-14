@@ -4,7 +4,7 @@
  *
  */
 
-package com.recomovie.util;
+package com.recomovie.excepciones;
 
 
 public class Util {

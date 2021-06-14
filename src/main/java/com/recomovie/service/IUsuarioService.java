@@ -35,4 +35,6 @@ public interface IUsuarioService {
 
     public UsuarioDTO verUsuarioNombre(String nombreUsuario);
 
+    public VisualizacionDTO obtenerVisualizacion(String nombreUsuario, int idPelicula);
+
 }

@@ -111,4 +111,15 @@ public class UsuarioService implements IUsuarioService {
     public UsuarioDTO verUsuarioNombre(String nombreUsuario){
         return usuarioDao.obtenerUsuarioNombre(nombreUsuario).toDTO();
     }
+
+    public VisualizacionDTO obtenerVisualizacion(String nombreUsuario, int idPelicula){
+        Usuario u = usuarioDao.obtenerUsuarioNombre(nombreUsuario);
+        Set<Visualizacion> listado = u.getPeliculasVistas();
+        for ( Visualizacion v : listado){
+            if(v.getPelicula().getIdPelicula() == idPelicula){
+                return v.toDTO();
+            }
+        }
+        return null;
+    }
 }

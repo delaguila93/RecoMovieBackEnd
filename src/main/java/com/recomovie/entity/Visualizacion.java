@@ -14,6 +14,7 @@ import javax.persistence.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -128,6 +129,14 @@ public class Visualizacion {
     }
 
     public VisualizacionDTO toDTO(){
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, 2000);
+        cal.set(Calendar.MONTH, Calendar.JANUARY);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+
+        if(this.getFechaComentario() == null){
+            this.setFechaComentario(cal.getTime());
+        }
         return new VisualizacionDTO(this.idVisualizacion,this.pelicula.getIdPelicula(),this.usuario.getIdUsuario(),this.valoracion,this.fechaComentario.toString(),this.comentario);
     }
 

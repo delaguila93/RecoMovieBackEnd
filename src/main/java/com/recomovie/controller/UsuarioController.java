@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("usuario")
 public class UsuarioController {
@@ -231,6 +233,24 @@ public class UsuarioController {
             mensaje = e.getMessage();
             estado = HttpStatus.INTERNAL_SERVER_ERROR;
         }
+        return new ResponseEntity(mensaje,estado);
+    }
+
+
+    @GetMapping(path="/obtenerVisualizacion")
+    public ResponseEntity<String> obtenerVisualizacion(@RequestParam Map<String, String> customQuery){
+        HttpStatus estado = HttpStatus.OK;
+        ObjectMapper obj = new ObjectMapper();
+        String mensaje = "";
+        String nombreUsuario = customQuery.get("usuario");
+        int idPelicula = Integer.parseInt( customQuery.get("pelicula"));
+        try{
+            mensaje = obj.writeValueAsString(servicioUsuario.obtenerVisualizacion(nombreUsuario,idPelicula));
+        }catch (Exception e){
+            mensaje = e.getMessage();
+            estado = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
         return new ResponseEntity(mensaje,estado);
     }
 }

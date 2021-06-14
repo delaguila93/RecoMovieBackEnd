@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.Map;
 
 
 @RestController
@@ -154,7 +155,6 @@ public class PeliculaController {
 
     /**
      *
-     * @param idPelicula Identificador de la pelicula a la que añadir la valoracion
      * @param v La Valoracion de la pelicula a añadir
      * @return Mensaje de confirmacion de que la valoracion ha sido añadida
      */
