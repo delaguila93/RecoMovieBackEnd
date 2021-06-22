@@ -7,6 +7,7 @@
 package com.recomovie.entity;
 
 import com.recomovie.dto.UsuarioDTO;
+import com.recomovie.excepciones.Util;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -31,7 +32,7 @@ public class Usuario {
     private String eMail;
     @Temporal(TemporalType.DATE)
     @Column( name="fechaNacimiento")
-    private Date fechaNacimineto;
+    private Calendar fechaNacimineto;
 
     @OneToMany(mappedBy = "usuario")
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -55,7 +56,7 @@ public class Usuario {
      * @param eMail
      * @param fechaNacimineto
      */
-    public Usuario( String nombreUsuario, String password, String eMail, Date fechaNacimineto) {
+    public Usuario( String nombreUsuario, String password, String eMail, Calendar fechaNacimineto) {
         this.nombreUsuario = nombreUsuario;
         this.password = password;
         this.eMail = eMail;
@@ -96,11 +97,11 @@ public class Usuario {
         this.eMail = eMail;
     }
 
-    public Date getFechaNacimineto() {
+    public Calendar getFechaNacimineto() {
         return fechaNacimineto;
     }
 
-    public void setFechaNacimineto(Date fechaNacimineto) {
+    public void setFechaNacimineto(Calendar fechaNacimineto) {
         this.fechaNacimineto = fechaNacimineto;
     }
 
@@ -123,26 +124,15 @@ public class Usuario {
      * @throws ParseException
      */
     public static Usuario fromDTO(UsuarioDTO u) throws ParseException {
-
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Date d = df.parse(u.getFechaNacimiento());
-        return new Usuario(u.getNombreUsuario(),u.getPassword(),u.geteMail(), d);
+        return new Usuario(u.getNombreUsuario(),u.getPassword(),u.geteMail(), Util.parsearStringFecha(u.getFechaNacimiento()));
     }
 
     /**
      * Funcion que convierte el Usuario a DTO
-     * @return
+     * @return El dto de Usuario
      */
     public UsuarioDTO toDTO(){
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, 2000);
-        cal.set(Calendar.MONTH, Calendar.JANUARY);
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-
-        if(this.getFechaNacimineto() == null){
-            this.setFechaNacimineto(cal.getTime());
-        }
-        return new UsuarioDTO(this.idUsuario,this.nombreUsuario,this.password,this.eMail,this.fechaNacimineto.toString(),this.peliculasVistas.size());
+        return new UsuarioDTO(this.idUsuario,this.nombreUsuario,this.password,this.eMail,Util.parsearCalendarFecha(this.fechaNacimineto),this.peliculasVistas.size());
     }
 
     /**

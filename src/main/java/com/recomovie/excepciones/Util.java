@@ -7,6 +7,12 @@
 package com.recomovie.excepciones;
 
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class Util {
 
     /**
@@ -34,5 +40,35 @@ public class Util {
         }
 
         return string.toString();
+    }
+
+    /**
+     * Metodo para cambiar la fecha de String a Calendar para usar en las entidades
+     *
+     * @param fecha La fecha en String para cambiar
+     * @return La fecha en vez de String en Calendar para su uso en las entidades
+     */
+    public static Calendar parsearStringFecha(String fecha)  {
+        Calendar cal = Calendar.getInstance();
+
+        String[] division = fecha.split("-");
+        int year = Integer.parseInt(division[0].substring(1));
+        int month = Integer.parseInt(division[1]);
+        int day = Integer.parseInt(division[2].substring(0,division[2].length()-1));
+
+        cal.set(Calendar.YEAR,year);
+        cal.set(Calendar.MONTH,month);
+        cal.set(Calendar.DAY_OF_MONTH,day);
+        return cal;
+    }
+
+    /**
+     * Metodo para cambiar la fecha dada de Calendar a String con el formato adecuado
+     * @param fecha Fecha a cambiar de tipo Calendar a String
+     * @return La fecha en String con el formato dado
+     */
+    public static String parsearCalendarFecha(Calendar fecha){
+        String fechaString = fecha.get(Calendar.DAY_OF_MONTH) + "-" + (fecha.get(Calendar.MONTH)+1) + "-" + fecha.get(Calendar.YEAR);
+        return fechaString;
     }
 }

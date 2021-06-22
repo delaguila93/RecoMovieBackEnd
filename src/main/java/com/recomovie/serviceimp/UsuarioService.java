@@ -14,6 +14,7 @@ import com.recomovie.dto.VisualizacionDTO;
 import com.recomovie.entity.Pelicula;
 import com.recomovie.entity.Usuario;
 import com.recomovie.entity.Visualizacion;
+import com.recomovie.excepciones.Util;
 import com.recomovie.service.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,10 +23,7 @@ import org.springframework.stereotype.Service;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UsuarioService implements IUsuarioService {
@@ -41,14 +39,10 @@ public class UsuarioService implements IUsuarioService {
 
     public void crearUsuario(UsuarioDTO u) throws ParseException {
         Usuario usuarioNuevo = new Usuario();
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Date d = (Date) df.parse(u.getFechaNacimiento());
-
         usuarioNuevo.seteMail(u.geteMail());
         usuarioNuevo.setNombreUsuario(u.getNombreUsuario());
         usuarioNuevo.setPassword(encoder.encode(u.getPassword()));
-        usuarioNuevo.setFechaNacimineto(d);
-
+        usuarioNuevo.setFechaNacimineto(Util.parsearStringFecha(u.getFechaNacimiento()));
         usuarioDao.crea(usuarioNuevo);
     }
 

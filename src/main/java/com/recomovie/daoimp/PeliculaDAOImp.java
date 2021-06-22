@@ -7,19 +7,17 @@
 package com.recomovie.daoimp;
 
 import com.recomovie.dao.PeliculaDAO;
-import com.recomovie.dto.PeliculaDTO;
 import com.recomovie.entity.Pelicula;
 import com.recomovie.entity.Usuario;
 import com.recomovie.entity.Visualizacion;
+import com.recomovie.excepciones.Util;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.List;
 
@@ -117,16 +115,15 @@ public class PeliculaDAOImp implements PeliculaDAO {
                 .setParameter(1,idPelicula)
                 .setParameter(2,idUsuario)
                 .getSingleResult();
-        v.setFechaComentario(DateFormat.getDateInstance().parse(fecha));
+
+        v.setFechaComentario(Util.parsearStringFecha(fecha));
         v.setComentario(comentario);
         em.merge(v);
     }
 
     @Transactional
     public void anadirValoracion(int idVisualizacion, float valoracion){
-        Visualizacion v = em.createQuery("SELECT v FROM Visualizacion v WHERE v.idVisualizacion= ?1",Visualizacion.class)
-                .setParameter(1,idVisualizacion)
-                .getSingleResult();
+        Visualizacion v = em.find(Visualizacion.class,idVisualizacion);
         v.setValoracion(valoracion);
         em.merge(v);
     }
@@ -147,10 +144,7 @@ public class PeliculaDAOImp implements PeliculaDAO {
     }
 
     public void editarComentario(Visualizacion v){
-        Visualizacion visualizacion = em.createQuery("SELECT v FROM Visualizacion v WHERE v.idVisualizacion = ?1",Visualizacion.class)
-                .setParameter(1,v.getIdVisualizacion())
-                .getSingleResult();
-
+        Visualizacion visualizacion = em.find(Visualizacion.class,v.getIdVisualizacion());
         visualizacion.setFechaComentario(v.getFechaComentario());
         visualizacion.setComentario(v.getComentario());
         em.merge(visualizacion);

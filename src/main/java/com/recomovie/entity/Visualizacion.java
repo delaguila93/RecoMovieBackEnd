@@ -7,6 +7,7 @@
 package com.recomovie.entity;
 
 import com.recomovie.dto.VisualizacionDTO;
+import com.recomovie.excepciones.Util;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -41,7 +42,7 @@ public class Visualizacion {
 
     @Temporal(TemporalType.DATE)
     @Column( name="fechaComentario")
-    private Date fechaComentario;
+    private Calendar fechaComentario;
 
     private String comentario;
 
@@ -62,7 +63,7 @@ public class Visualizacion {
         this.comentario = "";
     }
 
-    public Visualizacion(float valoracion,Date fechaComentario,String comentario) {
+    public Visualizacion(float valoracion,Calendar fechaComentario,String comentario) {
         this.pelicula = new Pelicula();
         this.usuario = new Usuario();
         this.valoracion = valoracion;
@@ -102,11 +103,11 @@ public class Visualizacion {
         this.usuario = usuario;
     }
 
-    public Date getFechaComentario() {
+    public Calendar getFechaComentario() {
         return fechaComentario;
     }
 
-    public void setFechaComentario(Date fechaComentario) {
+    public void setFechaComentario(Calendar fechaComentario) {
         this.fechaComentario = fechaComentario;
     }
 
@@ -120,12 +121,10 @@ public class Visualizacion {
 
 
     public static Visualizacion fromDTO(VisualizacionDTO v) throws ParseException {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         if(v.getFechaComentario() == null){
             v.setFechaComentario("2000-01-01");
-        }
-        Date f = df.parse(v.getFechaComentario());
-        return new Visualizacion(v.getValoracion(),f,v.getComentario());
+        };
+        return new Visualizacion(v.getValoracion(), Util.parsearStringFecha(v.getFechaComentario()),v.getComentario());
     }
 
     public VisualizacionDTO toDTO(){
@@ -135,9 +134,9 @@ public class Visualizacion {
         cal.set(Calendar.DAY_OF_MONTH, 1);
 
         if(this.getFechaComentario() == null){
-            this.setFechaComentario(cal.getTime());
+            this.setFechaComentario(cal);
         }
-        return new VisualizacionDTO(this.idVisualizacion,this.pelicula.getIdPelicula(),this.usuario.getIdUsuario(),this.valoracion,this.fechaComentario.toString(),this.comentario);
+        return new VisualizacionDTO(this.idVisualizacion,this.pelicula.getIdPelicula(),this.usuario.getIdUsuario(),this.valoracion,Util.parsearCalendarFecha(this.fechaComentario),this.comentario);
     }
 
     @Override
