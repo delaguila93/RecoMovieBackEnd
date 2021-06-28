@@ -40,7 +40,7 @@ public interface PeliculaDAO extends BaseDAO<Pelicula,Integer> {
     @Transactional
     public void crearVisualizacion(int idPelicula, int idUsuario);
     @Transactional
-    public void anadirComentario(int idPelicula,int idUsuario, String fecha, String comentario) throws ParseException ;
+    public void anadirComentario(int idVisualizacion, String fecha, String comentario)  ;
 
     @Transactional
     public void anadirValoracion(int idVisualizacion, float valoracion);

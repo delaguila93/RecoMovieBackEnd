@@ -52,9 +52,9 @@ public class Util {
         Calendar cal = Calendar.getInstance();
 
         String[] division = fecha.split("-");
-        int year = Integer.parseInt(division[0].substring(1));
+        int year = Integer.parseInt(division[0]);
         int month = Integer.parseInt(division[1]);
-        int day = Integer.parseInt(division[2].substring(0,division[2].length()-1));
+        int day = Integer.parseInt(division[2]);
 
         cal.set(Calendar.YEAR,year);
         cal.set(Calendar.MONTH,month);

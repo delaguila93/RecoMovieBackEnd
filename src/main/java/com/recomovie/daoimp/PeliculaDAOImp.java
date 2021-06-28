@@ -110,12 +110,8 @@ public class PeliculaDAOImp implements PeliculaDAO {
     }
 
     @Transactional
-    public void anadirComentario(int idPelicula,int idUsuario, String fecha, String comentario) throws ParseException {
-        Visualizacion v = em.createQuery("SELECT v FROM Visualizacion v WHERE v.idPelicula= ?1 AND v.idUsuario = ?2",Visualizacion.class)
-                .setParameter(1,idPelicula)
-                .setParameter(2,idUsuario)
-                .getSingleResult();
-
+    public void anadirComentario(int idVisualizacion, String fecha, String comentario) {
+        Visualizacion v = em.find(Visualizacion.class,idVisualizacion);
         v.setFechaComentario(Util.parsearStringFecha(fecha));
         v.setComentario(comentario);
         em.merge(v);

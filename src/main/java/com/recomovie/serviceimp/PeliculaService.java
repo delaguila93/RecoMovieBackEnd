@@ -11,6 +11,7 @@ import com.recomovie.dto.UsuarioDTO;
 import com.recomovie.dto.VisualizacionDTO;
 import com.recomovie.entity.Pelicula;
 import com.recomovie.entity.Visualizacion;
+import com.recomovie.excepciones.Util;
 import com.recomovie.service.IPeliculaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -140,7 +141,6 @@ public class PeliculaService implements IPeliculaService {
 
     public void anadirValoracion(VisualizacionDTO v) throws ParseException {
         Pelicula p = peliculaDao.obtener(v.getIdPelicula());
-        Visualizacion obtenido = new Visualizacion();
         int idBuscado = 0;
         if(p.existeVisualizacion(v.getIdPelicula(), v.getIdUsuario())){
             Set<Visualizacion> listado = p.getVisualizaciones();
@@ -149,7 +149,6 @@ public class PeliculaService implements IPeliculaService {
                     idBuscado = visualizacion.getIdVisualizacion();
                 }
             }
-            obtenido.setValoracion(v.getValoracion());
             peliculaDao.anadirValoracion(idBuscado,v.getValoracion());
         }else{
             peliculaDao.crearVisualizacion(v.getIdPelicula(), v.getIdUsuario());
@@ -159,17 +158,33 @@ public class PeliculaService implements IPeliculaService {
                     idBuscado = visualizacion.getIdVisualizacion();
                 }
             }
-            obtenido.setValoracion(v.getValoracion());
             peliculaDao.anadirValoracion(idBuscado,v.getValoracion());
         }
     }
 
 
-    public void anadirComentario(VisualizacionDTO v) throws ParseException {
-        if (peliculaDao.obtenerVisualizacion(v.getIdPelicula(), v.getIdUsuario()) == null) {
+    public void anadirComentario(VisualizacionDTO v)  {
+        Pelicula p = peliculaDao.obtener(v.getIdPelicula());
+        int idBuscado = 0;
+        if(p.existeVisualizacion(v.getIdPelicula(),v.getIdUsuario())){
+            Set<Visualizacion> listado = p.getVisualizaciones();
+            for (Visualizacion visualizacion: listado){
+                if((v.getIdUsuario() == visualizacion.getUsuario().getIdUsuario()) && (v.getIdPelicula() == visualizacion.getPelicula().getIdPelicula())){
+                    idBuscado = visualizacion.getIdVisualizacion();
+                }
+            }
+            peliculaDao.anadirComentario(idBuscado, v.getFechaComentario(),v.getComentario());
+        }else {
             peliculaDao.crearVisualizacion(v.getIdPelicula(), v.getIdUsuario());
+            Set<Visualizacion> listado = p.getVisualizaciones();
+            for (Visualizacion visualizacion: listado){
+                if((v.getIdUsuario() == visualizacion.getUsuario().getIdUsuario()) && (v.getIdPelicula() == visualizacion.getPelicula().getIdPelicula())){
+                    idBuscado = visualizacion.getIdVisualizacion();
+                }
+            }
+            peliculaDao.anadirComentario(idBuscado, v.getFechaComentario(),v.getComentario());
         }
-        peliculaDao.anadirComentario(v.getIdPelicula(), v.getIdUsuario(), v.getFechaComentario(), v.getComentario());
+
     }
 
     public void editarComentario(VisualizacionDTO v) throws ParseException {

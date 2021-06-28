@@ -31,6 +31,7 @@ public class PeliculaController {
     private IPeliculaService servicioPelicula;
 
     /**
+     * Funcion que recibe un identificador de una pelicula para obtener sus datos
      *
      * @param idPelicula El identificador de la pelicula
      * @return Los datos la pelicula proporcionada
@@ -53,6 +54,7 @@ public class PeliculaController {
     }
 
     /**
+     * Funcion que recibe un titulo de una pelicula para buscar las peliculas que contengan ese titulo
      *
      * @param titulo El titulo de la pelicula que se desea buscar
      * @return Las peliculas que encajen con el titulo que se ha dado
@@ -74,6 +76,7 @@ public class PeliculaController {
     }
 
     /**
+     * Funcion que recibe un rango de años para buscar las peliculas de ese rango de años
      *
      * @param year El año de las peliculas para
      * @return La lista de las peliculas cuyo año coincidan con el año dado
@@ -93,9 +96,10 @@ public class PeliculaController {
     }
 
     /**
-     * 
-     * @param generos
-     * @return
+     * Funcion que buscas las peliculas segun los generos dado
+     *
+     * @param generos Los generos para buscar las peliculas
+     * @return Las peliculas que tengan los generos dados
      */
     @GetMapping("/buscar-genero")
     public ResponseEntity<PeliculaDTO> buscarGenero(@RequestParam("generos") String generos){
@@ -112,6 +116,7 @@ public class PeliculaController {
     }
 
     /**
+     * Funcion que devuelve todas las peliculas
      *
      * @return El listado completo de peliculas
      */
@@ -133,6 +138,7 @@ public class PeliculaController {
     }
 
     /**
+     * Funcion que dado un identificador de pelicula devuelve las visualizaciones de la peliculas
      *
      * @param idPelicula Identificador de la pelicula de la cual queremos obtener los comentarios
      * @return El listado de comentarios de la pelicula proporcionada
@@ -155,7 +161,7 @@ public class PeliculaController {
 
     /**
      *
-     * @param v La Valoracion de la pelicula a añadir
+     * @param v La Valoracion de la pelicula a añadir contenido en el dto de Visualizacion
      * @return Mensaje de confirmacion de que la valoracion ha sido añadida
      */
     @PostMapping("/anadir-valoracion")
@@ -173,13 +179,13 @@ public class PeliculaController {
     }
 
     /**
+     * Funcion que recibe un comentario y su fecha para añadir
      *
-     * @param idPelicula Identificador de la pelicula a la que añadir el comentario
-     * @param v La fecha y el contenido del comentario a añadir
+     * @param v La fecha y el contenido del comentario a añadir contenido en el dto de Visualizacion
      * @return Mensaje de conformacion de que el comentario ha sido añadido correctamente
      */
-    @GetMapping("/anadir-comentario/{idPelicula}")
-    public ResponseEntity<String> anadirComentario(@PathVariable ("idPelicula") Integer idPelicula,@RequestBody VisualizacionDTO v){
+    @PostMapping("/anadir-comentario")
+    public ResponseEntity<String> anadirComentario(@RequestBody VisualizacionDTO v){
         HttpStatus estado = HttpStatus.OK;
         String mensaje = "";
         try{
@@ -193,8 +199,9 @@ public class PeliculaController {
     }
 
     /**
+     * Funcion que recibe el comentario y la fecha actual para su edicion
      *
-     * @param v Comentario editado
+     * @param v Comentario editado contenido en el dto de Visualizacion
      * @return Mensaje que confirma los cambios de comentario
      */
     @GetMapping("/editar-comentario")
@@ -212,8 +219,9 @@ public class PeliculaController {
     }
 
     /**
+     * Funcion que devuelve un listado aleatorio de peliculas para la pagina de Inicio
      *
-     * @return
+     * @return El listado de peliculas
      */
     @GetMapping(path = "/listadoInicio")
     public ResponseEntity<PeliculaDTO> obtenerPeliculasAleatorias(){
